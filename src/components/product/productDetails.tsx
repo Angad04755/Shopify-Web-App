@@ -3,25 +3,39 @@
 import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState, useCallback } from "react";
 import { addItem } from "../../store/features/cart/cartSlice";
 import { type Product } from "../product/types";
 import Button from "../ui/Button";
 import { fetchProduct } from "../../services/GetProductById";
 import { toast } from "react-toastify";
-import { useCallback } from "react";
 
 export default function ProductDetails() {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams();
   const dispatch = useDispatch();
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => fetchProduct(id!),
-    enabled: !!id, // 🚀 prevents running when id is undefined
-  });
+  const [product, setProduct] = useState<Product>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
-  const product: Product | undefined = data?.product;
+  // ✅ API call using useEffect
+  useEffect(() => {
+    if (!id) return;
+
+    const getProduct = async () => {
+      try {
+        setIsLoading(true);
+        const data = await fetchProduct(id);
+        setProduct(data.product);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getProduct();
+  }, [id]);
 
   const handleAddItem = useCallback(() => {
     if (product) {
@@ -30,8 +44,8 @@ export default function ProductDetails() {
     }
   }, [product, dispatch]);
 
-  // Loading state
-  if (isLoading || !product) {
+  // ✅ Loading
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-700">
         Loading product...
@@ -39,8 +53,8 @@ export default function ProductDetails() {
     );
   }
 
-  // Error state
-  if (isError) {
+  // ✅ Error
+  if (isError || !product) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-700">
         Product not found.
@@ -62,35 +76,32 @@ export default function ProductDetails() {
         className="w-full max-w-5xl bg-white rounded-2xl shadow-lg overflow-hidden
                    flex flex-col md:grid md:grid-cols-2"
       >
-        {/* Image Section */}
+        {/* Image */}
         <div className="bg-gray-100 flex items-center justify-center p-6 sm:p-10">
           <img
             src={product.thumbnail}
             alt={product.title}
-            width={320}
-            height={320}
-            className="object-contain rounded-lg w-full max-w-[280px] sm:max-w-[320px]"
+            className="object-contain rounded-lg w-full max-w-[320px]"
           />
         </div>
 
-        {/* Details Section */}
+        {/* Details */}
         <div className="p-6 sm:p-8 flex flex-col justify-between gap-5">
           <div>
-            <p className="text-xs sm:text-sm uppercase tracking-wide text-gray-500">
+            <p className="text-sm uppercase text-gray-500">
               {product.category}
             </p>
 
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mt-2">
+            <h1 className="text-2xl font-bold mt-2">
               {product.title}
             </h1>
 
-            <p className="text-gray-600 mt-4 text-sm sm:text-base leading-relaxed">
+            <p className="text-gray-600 mt-4">
               {product.description}
             </p>
 
-            {/* Rating */}
             <div className="flex items-center mt-4">
-              <span className="text-yellow-500 text-lg">★</span>
+              <span className="text-yellow-500">★</span>
               <span className="ml-2 text-sm text-gray-600">
                 {product.rating
                   ? `${product.rating} / 5 rating`
@@ -98,8 +109,7 @@ export default function ProductDetails() {
               </span>
             </div>
 
-            {/* Price */}
-            <p className="text-2xl sm:text-3xl font-semibold text-gray-900 mt-6">
+            <p className="text-3xl font-semibold mt-6">
               ${product.price}
             </p>
           </div>
@@ -107,7 +117,7 @@ export default function ProductDetails() {
           <Button
             text="Add to Cart"
             onClick={handleAddItem}
-            classname="px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-800 transition-all duration-150 cursor-pointer active:scale-95"
+            classname="px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-800"
           />
         </div>
       </motion.div>
