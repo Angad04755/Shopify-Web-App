@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
 import { type Product } from "../product/types";
 import { Heart, ShoppingBagIcon } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addItem } from "../../store/features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
 

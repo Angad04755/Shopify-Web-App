@@ -1,4 +1,5 @@
 "use client";
+
 import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
@@ -11,27 +12,26 @@ import { toast } from "react-toastify";
 import { useCallback } from "react";
 
 export default function ProductDetails() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["product", id],
-    queryFn: () => fetchProduct(id),
-
-    initialData: {
-      product: "",
-    }
+    queryFn: () => fetchProduct(id!),
+    enabled: !!id, // 🚀 prevents running when id is undefined
   });
 
-  const product: Product = data.product
+  const product: Product | undefined = data?.product;
 
   const handleAddItem = useCallback(() => {
     if (product) {
       dispatch(addItem(product));
       toast.success("Added to cart");
     }
-  }, [product])
-  if (isLoading) {
+  }, [product, dispatch]);
+
+  // Loading state
+  if (isLoading || !product) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-700">
         Loading product...
@@ -39,6 +39,7 @@ export default function ProductDetails() {
     );
   }
 
+  // Error state
   if (isError) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-700">
@@ -91,7 +92,9 @@ export default function ProductDetails() {
             <div className="flex items-center mt-4">
               <span className="text-yellow-500 text-lg">★</span>
               <span className="ml-2 text-sm text-gray-600">
-                {product.rating ? `${product.rating} / 5 rating` : "No ratings yet"}
+                {product.rating
+                  ? `${product.rating} / 5 rating`
+                  : "No ratings yet"}
               </span>
             </div>
 
@@ -100,7 +103,12 @@ export default function ProductDetails() {
               ${product.price}
             </p>
           </div>
-          <Button text="Add to Cart" onClick={handleAddItem} classname="px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-800 transition-all duration-150 cursor-pointer active:scale-95" />
+
+          <Button
+            text="Add to Cart"
+            onClick={handleAddItem}
+            classname="px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-800 transition-all duration-150 cursor-pointer active:scale-95"
+          />
         </div>
       </motion.div>
     </motion.div>

@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { HeartIcon, ShoppingCart, Menu, X, User, LogOut, TrashIcon, ChevronRight } from "lucide-react";
+import { HeartIcon, ShoppingCart, Menu, X, User, LogOut, TrashIcon } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { authenticated } from "../../store/features/auth/authSlice";
 import { motion, AnimatePresence } from "framer-motion";

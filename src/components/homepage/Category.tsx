@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getAllCategory } from "../../services/GetAllCatogories"
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 
 const Category = () => {
   const [categories, setCategories] = useState<any[]>([]);
@@ -63,7 +62,7 @@ const Category = () => {
 
         {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
-          {categories.map((category, index) => (
+          {categories.map((category) => (
             <div
               key={category.slug}
               

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { getProductsByCategory } from "../../services/GetProductByCategory";
 import ProductCard from "../ui/ProductCard";
-import { motion, number } from "framer-motion";
+import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import type { Product } from "../product/types";
@@ -14,44 +14,29 @@ const productsPerPage = 4;
 
 const DesktopProducts = () => {
   const [page, setPage] = useState(1);
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
 
   const skip = (page - 1) * productsPerPage;
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["products", slug, skip],
-    queryFn: () => getProductsByCategory(slug, productsPerPage, skip),
+    queryFn: () => getProductsByCategory(slug!, productsPerPage, skip),
+    enabled: !!slug, // 🚀 prevents undefined API call
   });
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [data]);
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center mt-10">
-        <GridLoader size={25} color="black" />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="min-h-screen flex justify-center items-center mt-10">
-        <span>Cannot load Products</span>
-      </div>
-    )
-  }
-
-  const products: Product[] = data.products;
-  const total = data.total;
+  // Safe data handling
+  const products: Product[] = data?.products || [];
+  const total = data?.total || 0;
 
   const TOTAL_PAGES = Math.ceil(total / productsPerPage);
   const isLastPage = page === TOTAL_PAGES;
 
-
   // pagination logic
-  const pages = [];
+  const pages: (number | null)[] = [];
 
   for (let i = 1; i <= TOTAL_PAGES; i++) {
     if (
@@ -65,9 +50,29 @@ const DesktopProducts = () => {
     }
   }
 
+  // Loading
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center mt-10">
+        <GridLoader size={25} color="black" />
+      </div>
+    );
+  }
+
+  // Error
+  if (isError) {
+    return (
+      <div className="min-h-screen flex justify-center items-center mt-10">
+        <span>Cannot load Products</span>
+      </div>
+    );
+  }
+
   return (
     <section className="min-h-screen max-w-7xl mx-auto px-6 py-8">
-      <h1 className="text-2xl font-semibold mb-6 capitalize">{slug}</h1>
+      <h1 className="text-2xl font-semibold mb-6 capitalize">
+        {slug || "Products"}
+      </h1>
 
       {/* Products */}
       <motion.div
@@ -89,23 +94,22 @@ const DesktopProducts = () => {
 
       {/* Pagination */}
       <div className="w-full flex justify-center gap-1 mt-8 items-center">
-
         {/* Prev */}
         <button
           disabled={page === 1}
           onClick={() => setPage((p) => p - 1)}
           className="px-1 py-1 border rounded-md disabled:opacity-40"
         >
-          <ChevronLeft size={25} color="black" />
+          <ChevronLeft size={25} />
         </button>
 
         {/* Page Numbers */}
         <div className="flex gap-2">
-          {pages.map((p: number | null, index: number) => {
-            if ( p === null) {
+          {pages.map((p, index) => {
+            if (p === null) {
               return (
                 <span key={index} className="px-2 text-gray-500 mt-[10px]">
-                  {"..."}
+                  ...
                 </span>
               );
             }
@@ -126,16 +130,16 @@ const DesktopProducts = () => {
 
         {/* Next */}
         <button
-          disabled={isLastPage}
+          disabled={isLastPage || TOTAL_PAGES === 0}
           onClick={() => setPage((p) => p + 1)}
           className="px-1 py-1 border rounded-md disabled:opacity-40"
         >
-          <ChevronRight size={25} color="black" />
+          <ChevronRight size={25} />
         </button>
       </div>
 
       {/* End message */}
-      {isLastPage && (
+      {isLastPage && TOTAL_PAGES > 0 && (
         <p className="text-center text-gray-400 text-sm mt-6">
           You've reached the end
         </p>

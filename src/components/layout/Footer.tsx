@@ -1,5 +1,3 @@
-import React from "react";
-
 const Footer = () => {
   return (
     <footer className="pt-20 pb-12 bg-gradient-to-br from-slate-900 via-gray-900 to-black text-gray-300">

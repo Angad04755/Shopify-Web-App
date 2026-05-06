@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export async function getProductsByCategory(
-  category: String,
+  category: string,
   limit: number,
   skip: number
 ) {

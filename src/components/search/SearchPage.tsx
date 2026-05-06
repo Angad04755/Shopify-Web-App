@@ -1,14 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { searchProduct } from "../../services/GetSearchProduct";
 import type { Product } from "../product/types";
 import ProductCard from "../ui/ProductCard";
 import { motion } from "framer-motion";
 
 const SearchPage = () => {
-  const searchParams = useSearchParams();
   let query;
 
   const [products, setProducts] = useState<Product[]>([]);
