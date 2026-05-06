@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { authenticated } from "../../store/features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { loginSchema } from "./schema"
-import type { LoginType } from "./schema";
+import { type LoginType } from "./schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 

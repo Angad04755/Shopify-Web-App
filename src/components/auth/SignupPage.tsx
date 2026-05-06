@@ -4,16 +4,16 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Register } from "../../store/features/auth/registerSlice";
 import { useNavigate } from "react-router-dom";
-
+import { type RootState } from "../../store/store";
 import { registerSchema } from "./schema";
-import type { RegisterType } from "./schema";
+import { type RegisterType } from "./schema";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 function SignupPage() {
 
-  const isRegistered = useSelector((state: any) => state.register.isRegistered);
+  const isRegistered = useSelector((state: RootState) => state.register.isRegistered);
 
   const dispatch = useDispatch();
   const navigate = useNavigate()

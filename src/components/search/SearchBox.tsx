@@ -2,7 +2,7 @@
 
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import type { Product } from "../product/types";
+import { type Product } from "../product/types";
 import { SearchIcon } from "lucide-react";
 import { searchProduct } from "../../services/GetSearchProduct"
 

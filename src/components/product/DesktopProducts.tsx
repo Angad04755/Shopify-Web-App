@@ -6,7 +6,7 @@ import ProductCard from "../ui/ProductCard";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import type { Product } from "../product/types";
+import { type Product } from "../product/types";
 import { GridLoader } from "react-spinners";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
