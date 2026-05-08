@@ -9,7 +9,7 @@ const Hero = () => {
   return (
     <section
       className="relative w-full
-                 bg-gradient-to-br from-slate-50 via-white to-indigo-50
+                 bg-gradient-to-b from-indigo-100 to-yellow-100
                  flex items-center px-4 md:px-8 lg:px-16 overflow-hidden"
     >
       <Carousal images={Images}/>
