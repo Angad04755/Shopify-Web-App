@@ -1,36 +1,77 @@
-"use client";
+import { useEffect, useState } from "react";
 
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { Register } from "../../store/features/auth/registerSlice";
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate, Link } from "react-router-dom";
+
 import { type RootState } from "../../store/store";
+
 import { registerSchema } from "./schema";
+
 import { type RegisterType } from "./schema";
 
 import { useForm } from "react-hook-form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 
-function SignupPage() {
+import { RegisterUser } from "../../services/AuthService";
 
-  const isRegistered = useSelector((state: RootState) => state.register.isRegistered);
+import { toast } from "react-toastify";
+
+function SignupPage() {
+  const isRegistered = useSelector(
+    (state: RootState) =>
+      state.register.isRegistered
+  );
+
+  const [error, setError] =
+    useState(false);
+
+  const [loading, setLoading] =
+    useState(false);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterType>({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(
+      registerSchema
+    ),
   });
 
-  const handleRegister = (data: RegisterType) => {
-    console.log(data);
+  const handleRegister = async (
+    data: RegisterType
+  ) => {
+    try {
+      setLoading(true);
 
-    dispatch(Register(true));
-    navigate("/sign-in");
+      setError(false);
+
+        await RegisterUser(data);
+
+      dispatch(Register(true));
+
+      toast.success(
+        "Account created"
+      );
+
+      navigate("/sign-in");
+    } catch (error) {
+      setError(true);
+
+      toast.error(
+        "Error creating account"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -40,83 +81,101 @@ function SignupPage() {
   }, [isRegistered]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-400 to-blue-500">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 px-4">
+      <div className="w-full max-w-md bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8">
+        <div className="flex flex-col items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">
+            Create Account
+          </h1>
 
-      <div className="bg-white w-[350px] p-8 rounded-2xl shadow-xl">
-
-        <h2 className="text-2xl font-bold text-center mb-6">
-          Create Account
-        </h2>
+          <p className="text-gray-500 text-sm mt-2">
+            Sign up to continue
+          </p>
+        </div>
 
         <form
-          onSubmit={handleSubmit(handleRegister)}
-          className="flex flex-col gap-4"
+          onSubmit={handleSubmit(
+            handleRegister
+          )}
+          className="space-y-5"
         >
-
-          {/* NAME */}
-          <div className="flex flex-col">
-            <label className="text-sm font-medium mb-1">Name</label>
-
-            <input
-              {...register("name")}
-              type="text"
-              placeholder="Enter your name"
-              className="px-3 py-2 border rounded-md outline-none focus-within:ring-2 focus-within:ring-purple-500"
-            />
-
-            {errors.name && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.name.message}
-              </p>
-            )}
-          </div>
-
           {/* EMAIL */}
-          <div className="flex flex-col">
-            <label className="text-sm font-medium mb-1">Email</label>
+          <div>
+            <label className="text-sm font-medium text-gray-700 block mb-2">
+              Email Address
+            </label>
 
             <input
               {...register("email")}
               type="email"
               placeholder="Enter your email"
-              className="px-3 py-2 border rounded-md outline-none focus-within:ring-2 focus-within:ring-purple-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-300"
             />
 
             {errors.email && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.email.message}
+              <p className="text-red-500 text-xs mt-2">
+                {
+                  errors.email
+                    .message
+                }
               </p>
             )}
           </div>
 
           {/* PASSWORD */}
-          <div className="flex flex-col">
-            <label className="text-sm font-medium mb-1">Password</label>
+          <div>
+            <label className="text-sm font-medium text-gray-700 block mb-2">
+              Password
+            </label>
 
             <input
-              {...register("password")}
+              {...register(
+                "password"
+              )}
               type="password"
-              placeholder="Enter your password"
-              className="px-3 py-2 border rounded-md outline-none focus-within:ring-2 focus-within:ring-purple-500"
+              placeholder="Create a password"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-300"
             />
 
             {errors.password && (
-              <p className="text-red-500 text-xs mt-1">
-                {errors.password.message}
+              <p className="text-red-500 text-xs mt-2">
+                {
+                  errors.password
+                    .message
+                }
               </p>
             )}
           </div>
 
+          {/* ERROR MESSAGE */}
+          {error && (
+            <p className="text-red-500 text-sm text-center">
+              Error creating
+              account
+            </p>
+          )}
+
           <button
+            disabled={loading}
             type="submit"
-            className="mt-2 py-2 bg-purple-600 text-white rounded-md font-semibold hover:bg-purple-700 transition duration-300"
+            className="w-full bg-purple-600 hover:bg-purple-700 disabled:opacity-70 text-white py-3 rounded-xl font-semibold transition duration-300 active:scale-[0.98]"
           >
-            Register
+            {loading
+              ? "Creating Account..."
+              : "Create Account"}
           </button>
-
         </form>
-      </div>
 
+        <div className="mt-8 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link
+            to="/sign-in"
+            className="text-purple-600 font-semibold hover:text-purple-700"
+          >
+            Sign In
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

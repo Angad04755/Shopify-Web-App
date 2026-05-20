@@ -1,69 +1,141 @@
 "use client";
+
 import { useDispatch } from "react-redux";
 import { authenticated } from "../../store/features/auth/authSlice";
-import { useNavigate } from "react-router-dom";
-import { loginSchema } from "./schema"
+import { useNavigate, Link } from "react-router-dom";
+import { loginSchema } from "./schema";
 import { type LoginType } from "./schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginUser } from "../../services/AuthService";
 
 function SigninPage() {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const {register, handleSubmit, formState: {errors}} = useForm<LoginType>({
-      resolver: zodResolver(loginSchema),
-    })
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginType>({
+    resolver: zodResolver(loginSchema),
+  });
 
-    const handleSignIn = () => {
-        dispatch(authenticated(true));
-        navigate("/");
-      };
- return (
-    <>
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-400 to-blue-500">
-        <div className="bg-white w-[350px] p-8 rounded-2xl shadow-xl">
-          <h2 className="text-2xl font-bold text-center mb-6">Sign In</h2>
+  const handleSignIn = async (
+    data: LoginType
+  ) => {
+    try {
+      const result = await LoginUser(data);
 
-          <form onSubmit={handleSubmit(handleSignIn)} className="flex flex-col gap-4">
-            <div className="flex flex-col">
-              <label className="text-sm font-medium mb-1">Email</label>
-              <input
+      console.log(result);
+
+      localStorage.setItem(
+        "token",
+        result.token
+      );
+
+      dispatch(authenticated(true));
+
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 px-4">
+      <div className="w-full max-w-md bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl p-8">
+        <div className="flex flex-col items-center mb-8">
+          <div className="w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center mb-4">
+            <span className="text-2xl">👋</span>
+          </div>
+
+          <h1 className="text-3xl font-bold text-gray-800">
+            Welcome Back
+          </h1>
+
+          <p className="text-sm text-gray-500 mt-2">
+            Sign in to continue to your account
+          </p>
+        </div>
+
+        <form
+          onSubmit={handleSubmit(handleSignIn)}
+          className="space-y-5"
+        >
+          <div>
+            <label className="text-sm font-medium text-gray-700 block mb-2">
+              Email Address
+            </label>
+
+            <input
               {...register("email")}
-                type="email"
-                placeholder="Enter email"
-                className="px-3 py-2 border border-gray-300 rounded-md outline-none focus-within:ring-2 focus-within:ring-purple-500 transition duration-300"
-              />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
-              )}
-            </div>
+              type="email"
+              placeholder="Enter your email"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-300"
+            />
 
-            <div className="flex flex-col">
-              <label className="text-sm font-medium mb-1">Password</label>
-              <input
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-2">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-gray-700 block mb-2">
+              Password
+            </label>
+
+            <input
               {...register("password")}
-                type="password"
-                placeholder="Enter password"
-                className="px-3 py-2 border border-gray-300 rounded-md outline-none focus-within:ring-2 focus-within:ring-purple-500 transition duration-300"
-              />
-              {errors.password && (
-                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
-              )}
-            </div>
+              type="password"
+              placeholder="Enter your password"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-300"
+            />
+
+            {errors.password && (
+              <p className="text-red-500 text-xs mt-2">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          <div className="flex items-center justify-between text-sm">
+            <label className="flex items-center gap-2 text-gray-600">
+              <input type="checkbox" />
+              Remember me
+            </label>
 
             <button
-              type="submit"
-              className="bg-purple-600 text-white py-3 px-4 rounded-md hover:bg-purple-700 active:scale-95 transition duration-300"
+              type="button"
+              className="text-purple-600 hover:text-purple-700 font-medium"
             >
-              Sign In
+              Forgot Password?
             </button>
-          </form>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-semibold transition duration-300 active:scale-[0.98]"
+          >
+            Sign In
+          </button>
+        </form>
+
+        <div className="mt-8 text-center text-sm text-gray-600">
+          Don&apos;t have an account?{" "}
+          <Link
+            to="/sign-up"
+            className="text-purple-600 font-semibold hover:text-purple-700"
+          >
+            Register
+          </Link>
         </div>
-        </div>
-    </>
- )
+      </div>
+    </div>
+  );
 }
 
 export default SigninPage;

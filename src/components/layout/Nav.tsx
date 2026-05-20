@@ -120,19 +120,16 @@ const Nav = () => {
 
       {!isAuthenticated && !isRegistered && (
         <div className="flex flex-col gap-2 p-3">
-          <p className="text-xs text-center text-gray-500 font-bold">
-            Welcome! Please create account.
-          </p>
           <button
             onClick={() => {
-              navigate("/sign-up");
+              navigate("/sign-in");
               setProfileOpen(false);
               setIsOpen(false);
               hideModal();
             }}
-            className="w-full border-t-2 font-semibold border-gray-200 text-gray-700 text-sm py-2 hover:bg-gray-200 transition duration-150 cursor-pointer"
+            className="w-full border-2 font-semibold border-gray-200 text-gray-700 text-sm py-2 hover:bg-gray-200 transition duration-150 cursor-pointer"
           >
-            Register
+            Login
           </button>
         </div>
       )}
@@ -235,12 +232,12 @@ const Nav = () => {
 
                     {!isAuthenticated && !isRegistered && (
                       <div className="p-3 flex flex-col gap-2">
-                        <p className="text-xs text-gray-500 px-1 pb-1">Welcome! Please create account.</p>
+                        
                         <button
-                          onClick={() => { navigate("/sign-up"); setProfileOpen(false); }}
+                          onClick={() => { navigate("/sign-in"); setProfileOpen(false); }}
                           className="w-full border-2 border-gray-200 text-gray-700 text-sm font-semibold py-2 rounded-lg hover:bg-gray-200 transition duration-150 cursor-pointer"
                         >
-                          Register
+                          Login
                         </button>
                       </div>
                     )}
