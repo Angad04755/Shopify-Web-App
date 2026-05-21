@@ -5,13 +5,13 @@ import { searchProduct } from "../../services/GetSearchProduct";
 import { type Product } from "../product/types";
 import ProductCard from "../ui/ProductCard";
 import { motion } from "framer-motion";
-
+import { useSearchParams } from "react-router-dom";
 const SearchPage = () => {
-  let query;
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-
+  const [SearchParams] = useSearchParams();
+  let query = SearchParams.get("query");
   useEffect(() => {
     if (!query) return;
 
