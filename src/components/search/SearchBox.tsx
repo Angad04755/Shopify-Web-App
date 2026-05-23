@@ -1,3 +1,5 @@
+// SearchBox.tsx
+
 "use client";
 
 import {
@@ -23,7 +25,7 @@ const SearchBox = () => {
 
   const [searchParams] = useSearchParams();
 
-  // Debounce search
+  // Suggestions
   useEffect(() => {
     if (!query.trim()) {
       setSuggestions([]);
@@ -54,7 +56,7 @@ const SearchBox = () => {
     }
   }, [location.pathname]);
 
-  // Sync query from URL
+  // Sync URL query
   useEffect(() => {
     const urlQuery = searchParams.get("query");
 
@@ -65,13 +67,10 @@ const SearchBox = () => {
     setSuggestions([]);
   }, [searchParams]);
 
-  // Navigate to search page
   const goToSearch = (value: string) => {
     const trimmed = value.trim();
 
     if (!trimmed) return;
-
-    setQuery(trimmed);
 
     setSuggestions([]);
 
@@ -85,8 +84,8 @@ const SearchBox = () => {
   };
 
   return (
-    <div className="w-full flex justify-center">
-      <div className="w-full relative">
+    <div className="mt-10 flex justify-center">
+      <div className="w-full px-5 md:px-35">
         <form
           onSubmit={handleSubmit}
           className="flex items-center rounded-full border border-gray-300 bg-white focus-within:ring-2 focus-within:ring-blue-500 transition duration-150 ease-in-out"
@@ -107,11 +106,13 @@ const SearchBox = () => {
         </form>
 
         {query.trim() && suggestions.length > 0 && (
-          <div className="absolute left-0 right-0 top-12 z-50 rounded-xl bg-white shadow border overflow-hidden">
+          <div className="top-12 z-50 rounded-xl bg-white shadow border overflow-hidden">
             {suggestions.map((i) => (
               <div
                 key={i.id}
-                onClick={() => goToSearch(i.title)}
+                onClick={() =>
+                  navigate(`/product/product-details/${i.id}`)
+                }
                 className="px-4 py-3 hover:bg-gray-100 cursor-pointer"
               >
                 {i.title}

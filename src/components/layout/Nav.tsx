@@ -1,10 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
-import { HeartIcon, ShoppingCart, Menu, X, User, LogOut, TrashIcon } from "lucide-react";
+import { HeartIcon, ShoppingCart, Menu, X, User, LogOut, TrashIcon, SearchIcon } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { authenticated } from "../../store/features/auth/authSlice";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import SearchBox from "../search/SearchBox";
 import { toast } from "react-toastify";
 import { Register } from "../../store/features/auth/registerSlice";
 import { useLocation } from "react-router-dom";
@@ -151,11 +150,7 @@ const Nav = () => {
           <div onClick={() => navigate("/")} className="flex items-center gap-2">
             <img src={logo} alt="Shopify logo" width={44} height={44}/>
             <span className="text-lg md:text-xl lg:text-2xl font-bold">Shopify</span>
-          </div>
-
-          <div className="hidden md:block w-full md:w-[420px] ml-[50px]">
-            <SearchBox/>
-          </div>
+          </div>          
 
           <div className="hidden md:flex lg:hidden items-center gap-4 flex-1 justify-end">
             <div onClick={() => navigate("/cart")}>
@@ -172,6 +167,7 @@ const Nav = () => {
           </div>
 
           <div className="hidden lg:flex items-center gap-6">
+            <SearchIcon size={25} color="black" className={`${location.pathname === "/search" ? "fill-black" : ""} cursor-pointer`} onClick={() => navigate("/search")}/>
             <HeartIcon className="cursor-pointer hover:text-red-500 transition-all duration-150" />
 
             <div onClick={() => navigate("/cart")} className="relative">
@@ -251,16 +247,12 @@ const Nav = () => {
           <button onClick={showModal} className="md:hidden">
             <User size={25} color="black" />
           </button>
-
+           <SearchIcon size={25} color="black" className={`${location.pathname === "/search" ? "fill-black" : ""} md:hidden cursor-pointer`} onClick={() => navigate("/search")}/>
           <button onClick={() => setIsOpen(true)} className="md:hidden">
             <Menu size={28} />
           </button>
 
         </nav>
-
-        <div className="md:hidden px-4 pb-3">
-          <SearchBox />
-        </div>
       </motion.header>
       <div>
       {modalOpen && (

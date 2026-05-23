@@ -1,24 +1,39 @@
+// SearchPage.tsx
+
 "use client";
 
 import { useEffect, useState } from "react";
-import { searchProduct } from "../../services/GetSearchProduct";
-import { type Product } from "../product/types";
-import ProductCard from "../ui/ProductCard";
-import { motion } from "framer-motion";
-import { useSearchParams } from "react-router-dom";
-const SearchPage = () => {
 
+import { useSearchParams } from "react-router-dom";
+
+import { motion } from "framer-motion";
+
+import ProductCard from "../ui/ProductCard";
+
+import { searchProduct } from "../../services/GetSearchProduct";
+
+import { type Product } from "../product/types";
+
+const SearchDetails = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
-  const [SearchParams] = useSearchParams();
-  let query = SearchParams.get("query");
-  useEffect(() => {
-    if (!query) return;
 
-    const fetchProduct = async () => {
+  const [searchParams] = useSearchParams();
+
+  const query = searchParams.get("query");
+
+  useEffect(() => {
+    if (!query) {
+      setProducts([]);
+      return;
+    }
+
+    const fetchProducts = async () => {
       try {
         setLoading(true);
+
         const data = await searchProduct(query);
+
         setProducts(data);
       } catch (error) {
         console.error("error", error);
@@ -27,35 +42,38 @@ const SearchPage = () => {
       }
     };
 
-    fetchProduct();
+    fetchProducts();
   }, [query]);
 
   return (
-    <motion.section
+    <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className="min-h-screen bg-gray-50"
+      className=""
     >
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        <section>
-        {/* SEARCH HEADER */}
-        <motion.div
-          initial={{ y: 10, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          className="mb-8 bg-white rounded-2xl p-6 shadow-sm border"
-        >
-          <h1 className="text-xl sm:text-2xl font-semibold text-gray-800">
-            Search results
-          </h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Showing results for{" "}
-            <span className="font-medium text-gray-800">
-              “{query}”
-            </span>
-          </p>
-        </motion.div>
+
+      <section className="max-w-7xl mx-auto px-4 py-8">
+                {/* SEARCH HEADER */}
+        {query && (
+          <motion.div
+            initial={{ y: 10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="mb-8 bg-white rounded-2xl p-6 shadow-sm"
+          >
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-800">
+              Search results
+            </h1>
+
+            <p className="text-sm text-gray-500 mt-1">
+              Showing results for{" "}
+              <span className="font-medium text-gray-800">
+                “{query}”
+              </span>
+            </p>
+          </motion.div>
+        )}
 
         {/* LOADING */}
         {loading && (
@@ -65,23 +83,25 @@ const SearchPage = () => {
               transition={{ repeat: Infinity, duration: 1.2 }}
               className="text-gray-500 text-sm"
             >
-              Searching products…
+              Searching products...
             </motion.div>
           </div>
         )}
 
         {/* NO RESULTS */}
-        {!loading && products.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-20"
-          >
-            <p className="text-gray-500 text-sm">
-              No products found matching your search.
-            </p>
-          </motion.div>
-        )}
+        {!loading &&
+          query &&
+          products.length === 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-20"
+            >
+              <p className="text-gray-500 text-sm">
+                No products found matching your search.
+              </p>
+            </motion.div>
+          )}
 
         {/* RESULTS */}
         {!loading && products.length > 0 && (
@@ -92,7 +112,9 @@ const SearchPage = () => {
               hidden: { opacity: 0 },
               visible: {
                 opacity: 1,
-                transition: { staggerChildren: 0.05 },
+                transition: {
+                  staggerChildren: 0.05,
+                },
               },
             }}
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6"
@@ -111,10 +133,9 @@ const SearchPage = () => {
             ))}
           </motion.div>
         )}
-        </section>
-      </main>
-    </motion.section>
+      </section>
+    </motion.main>
   );
 };
 
-export default SearchPage;
+export default SearchDetails;
