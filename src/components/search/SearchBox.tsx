@@ -16,7 +16,11 @@ import { SearchIcon } from "lucide-react";
 
 import { searchProduct } from "../../services/GetSearchProduct";
 
-const SearchBox = () => {
+interface SearchBoxProps {
+  Onsearch: (query: string) => void
+}
+
+const SearchBox = ({Onsearch}: SearchBoxProps) => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Product[]>([]);
 
@@ -75,6 +79,7 @@ const SearchBox = () => {
     setSuggestions([]);
 
     navigate(`/search?query=${encodeURIComponent(trimmed)}`);
+    Onsearch(trimmed);
   };
 
   const handleSubmit = (e: React.FormEvent) => {

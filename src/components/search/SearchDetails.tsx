@@ -1,10 +1,8 @@
-// SearchPage.tsx
+// SearchDetails.tsx
 
 "use client";
 
-import { useEffect, useState } from "react";
-
-import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 
 import { motion } from "framer-motion";
 
@@ -14,36 +12,31 @@ import { searchProduct } from "../../services/GetSearchProduct";
 
 import { type Product } from "../product/types";
 
+import SearchBox from "./SearchBox";
+
 const SearchDetails = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const [searchParams] = useSearchParams();
+  const fetchProducts = async (query: string) => {
+    try {
+      setLoading(true);
 
-  const query = searchParams.get("query");
+      setHasSearched(true);
 
-  useEffect(() => {
-    if (!query) {
-      setProducts([]);
-      return;
+      setSearchQuery(query);
+
+      const data = await searchProduct(query);
+
+      setProducts(data);
+    } catch (error) {
+      console.error("error", error);
+    } finally {
+      setLoading(false);
     }
-
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-
-        const data = await searchProduct(query);
-
-        setProducts(data);
-      } catch (error) {
-        console.error("error", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [query]);
+  };
 
   return (
     <motion.main
@@ -52,10 +45,11 @@ const SearchDetails = () => {
       transition={{ duration: 0.3 }}
       className=""
     >
+      <SearchBox Onsearch={fetchProducts} />
 
       <section className="max-w-7xl mx-auto px-4 py-8">
-                {/* SEARCH HEADER */}
-        {query && (
+        {/* SEARCH HEADER */}
+        {hasSearched && (
           <motion.div
             initial={{ y: 10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -69,7 +63,7 @@ const SearchDetails = () => {
             <p className="text-sm text-gray-500 mt-1">
               Showing results for{" "}
               <span className="font-medium text-gray-800">
-                “{query}”
+                “{searchQuery}”
               </span>
             </p>
           </motion.div>
@@ -90,7 +84,7 @@ const SearchDetails = () => {
 
         {/* NO RESULTS */}
         {!loading &&
-          query &&
+          hasSearched &&
           products.length === 0 && (
             <motion.div
               initial={{ opacity: 0 }}
