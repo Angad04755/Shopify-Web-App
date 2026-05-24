@@ -40,7 +40,7 @@ const SearchBox = ({Onsearch}: SearchBoxProps) => {
       try {
         const res = await searchProduct(query);
 
-        setSuggestions(res.slice(0, 6));
+        setSuggestions(res.products.slice(0, 6));
       } catch (error) {
         console.error(error);
       }

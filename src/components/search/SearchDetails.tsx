@@ -30,7 +30,7 @@ const SearchDetails = () => {
 
       const data = await searchProduct(query);
 
-      setProducts(data);
+      setProducts(data.products);
     } catch (error) {
       console.error("error", error);
     } finally {

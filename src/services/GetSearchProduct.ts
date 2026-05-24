@@ -1,7 +1,13 @@
-import axios from "axios";
 export async function searchProduct(query: string) {
-  const res = await axios.get(
-    `https://dummyjson.com/products/search?q=${query}`
+  const res = await fetch(
+    `https://dummyjson.com/products/search?q=${query}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    }
+
   );
-  return res.data.products;
+  return res.json();
 }
