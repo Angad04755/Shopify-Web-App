@@ -1,10 +1,9 @@
-import { lazy, Suspense } from "react";
-const Cart = lazy(() => import("../components/cart/CartPage"))
+import Cart from "../components/cart/CartPage"
 function CartPage() {
     return (
-        <Suspense>
+        <main className="min-h-screen">
             <Cart/>
-        </Suspense>
+        </main>
     )
 }
 export default CartPage;

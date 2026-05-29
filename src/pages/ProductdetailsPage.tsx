@@ -1,11 +1,10 @@
-import { lazy, Suspense } from "react";
-const ProductDetails = lazy(() => import("../components/product/productDetails"));
+import ProductDetails from "../components/product/productDetails";
 
 function ProductdetailsPage() {
     return (
-        <Suspense>
-            <ProductDetails/>
-        </Suspense>
+        <main className="min-h-screen">
+        <ProductDetails/>
+        </main>
     )
 }
 

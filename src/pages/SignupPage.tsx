@@ -1,10 +1,9 @@
-import { lazy, Suspense } from "react";
-const Signup = lazy(() => import("../components/auth/SignupPage"))
+import Signup  from "../components/auth/SignupPage";
 function SignupPage() {
     return (
-        <Suspense>
+        <main className="min-h-screen">
             <Signup/>
-        </Suspense>
+        </main>
     )
 }
 

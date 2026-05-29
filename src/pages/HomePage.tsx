@@ -1,14 +1,10 @@
-import { lazy } from "react";
-import { Suspense } from "react";
-const Hero = lazy(() => import("../components/homepage/Hero"));
-const Category = lazy(() => import("../components/homepage/Category"));
+import HomePageContent from "../components/homepage/HomepageContent";
 
 const HomePage = ()=>{
- return <>
-         <Suspense>
-        <Hero/>
-        <Category/>
-        </Suspense>
-   </>
-}
+ return (
+
+        <main className="min-h-screen">
+        <HomePageContent/>
+        </main>
+)}
 export default HomePage;

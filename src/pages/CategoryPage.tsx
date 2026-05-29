@@ -1,11 +1,10 @@
-import { lazy, Suspense } from "react";
-const CategoryProducts = lazy(() => import("../components/product/DesktopProducts"));
+import CategoryProducts from "../components/product/DesktopProducts";
 
 function CategoryPage() {
     return (
-        <Suspense>
+        <main className="min-h-screen">
             <CategoryProducts/>
-        </Suspense>
+        </main>
     )
 }
 
