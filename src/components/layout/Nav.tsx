@@ -284,37 +284,36 @@ gap-6
 >
 
 
-<SearchIcon
+<button className={`${location.pathname === "/search" ? "bg-white" : ""} hover:bg-white px-2 py-2 rounded-full transition`}><SearchIcon
 
 size={24}
 
-className={`cursor-pointer ${location.pathname === "/search" ? "fill-black" : "hover:scale-95"}`}
+className={`cursor-pointer ${location.pathname === "/search" ? "fill-black" : ""}`}
 
 onClick={()=>navigate("/search")}
 
-/>
+/></button>
 
 
-<HeartIcon
+<button><HeartIcon
 
 className="cursor-pointer"
 
-/>
+/></button>
 
 
 
 <CartIcon
-totalQuantity={totalQuantity}
 />
 
 
 
-<UserSection
+<button className=""><UserSection
 isAuthenticated={isAuthenticated}
 profileOpen={profileOpen}
 setProfileOpen={setProfileOpen}
 logout={logout}
-/>
+/></button>
 
 
 
@@ -341,18 +340,19 @@ gap-4
 >
 
 
-<SearchIcon
+<button className={`${location.pathname === "/search" ? "bg-white" : ""} hover:bg-white px-2 py-2 rounded-full transition`}><SearchIcon
 
-size={23} className={`${location.pathname === "/search" ? "fill-black" : ""}`}
+size={24}
+
+className={`cursor-pointer ${location.pathname === "/search" ? "fill-black" : ""}`}
 
 onClick={()=>navigate("/search")}
 
-/>
+/></button>
 
 
 
 <CartIcon
-totalQuantity={totalQuantity}
 />
 
 
@@ -633,11 +633,7 @@ justify-center
 
 
 
-function CartIcon({
-totalQuantity
-}:{
-totalQuantity:number
-}){
+function CartIcon(){
 
 
 const navigate=useNavigate();
@@ -645,58 +641,26 @@ const navigate=useNavigate();
 
 return (
 
-<div
 
-onClick={()=>navigate("/cart")}
 
-className="
-relative
-cursor-pointer
-transition
-"
 
+<button
+  className={`
+    relative
+    cursor-pointer
+    transition
+    px-2 py-2
+    rounded-full
+    hover:bg-white
+    ${location.pathname === "/cart" ? "bg-white" : ""}
+  `}
+  onClick={() => navigate("/cart")}
 >
-
-
-<ShoppingCart size={24} className={`${location.pathname === "/cart" ? "fill-black" : "hover:scale-95"}`}/>
-
-
-{
-totalQuantity>0 &&
-
-<span
-
-className="
-absolute
--top-2
--right-2
-
-bg-red-500
-text-white
-
-text-xs
-
-rounded-full
-
-w-5
-h-5
-
-flex
-items-center
-justify-center
-
-"
-
->
-
-{totalQuantity}
-
-</span>
-
-}
-
-
-</div>
+  <ShoppingCart
+    size={24}
+    className={location.pathname === "/cart" ? "fill-black" : ""}
+  />
+</button>
 
 )
 
@@ -764,32 +728,26 @@ return (
 
 <div className="relative">
 
-
 <button
-
-onClick={()=>
-setProfileOpen(!profileOpen)
-}
-
-className="
-w-10
-h-10
-
-rounded-full
-
-bg-indigo-200
-
-flex
-items-center
-justify-center
-
-"
-
+  onClick={() => setProfileOpen(!profileOpen)}
+  className={`
+    w-10
+    h-10
+    rounded-full
+    flex
+    items-center
+    justify-center
+    cursor-pointer
+    transition
+    bg-indigo-200
+    hover:bg-indigo-200/80
+    ${profileOpen ? "bg-indigo-200/80" : ""}
+  `}
 >
-
-<User size={20}/>
-
-
+  <User
+    size={20}
+    className={profileOpen ? "fill-black" : ""}
+  />
 </button>
 
 

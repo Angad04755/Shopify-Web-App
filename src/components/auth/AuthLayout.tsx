@@ -48,7 +48,7 @@ function AuthLayout() {
       md:flex
 
 
-      w-1/2
+      w-[50vw]
 
       h-screen
 
@@ -339,7 +339,7 @@ function AuthLayout() {
 
       w-full
 
-      md:w-1/2
+      md:w-[50vw]
 
 
       min-h-screen
