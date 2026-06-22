@@ -47,7 +47,7 @@ function SignIn({ onRegister }: Props) {
 
       dispatch(authenticated(true));
 
-      navigate("/");
+      navigate("/", { replace: true });
 
 
     }catch(error){
@@ -65,7 +65,7 @@ function SignIn({ onRegister }: Props) {
     <div>
 
 
-      <h1 className="text-3xl font-bold text-gray-800 mb-2">
+      <h1 className="text-3xl font-semibold text-gray-800 mb-2">
         Welcome Back
       </h1>
 

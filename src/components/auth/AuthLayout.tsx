@@ -223,11 +223,11 @@ function AuthLayout() {
 
             className="
 
-            text-gray-600
+            text-black
 
             text-2xl
 
-            font-bold
+            font-semibold
 
             "
 

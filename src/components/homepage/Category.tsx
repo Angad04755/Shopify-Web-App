@@ -49,7 +49,7 @@ const Category = () => {
         <div
           className="text-center mb-16"
         >
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-gray-900">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-semibold text-gray-900">
             Shop by Category
           </h1>
 

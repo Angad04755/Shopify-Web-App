@@ -4,7 +4,6 @@
 import {
   useNavigate,
   useSearchParams,
-  useLocation
 } from "react-router-dom";
 
 
@@ -44,7 +43,6 @@ const SearchBox = () => {
 
   const navigate = useNavigate();
 
-  const location = useLocation();
 
 
   const [searchParams] =

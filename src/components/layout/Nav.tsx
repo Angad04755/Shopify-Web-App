@@ -249,8 +249,8 @@ className="w-10 h-10"
 <span
 
 className="
-font-bold
-text-gray-600
+font-semibold
+text-black
 text-2xl
 "
 
@@ -288,7 +288,7 @@ gap-6
 
 size={24}
 
-className="cursor-pointer"
+className={`cursor-pointer ${location.pathname === "/search" ? "fill-black" : "hover:scale-95"}`}
 
 onClick={()=>navigate("/search")}
 
@@ -343,7 +343,7 @@ gap-4
 
 <SearchIcon
 
-size={23}
+size={23} className={`${location.pathname === "/search" ? "fill-black" : ""}`}
 
 onClick={()=>navigate("/search")}
 
@@ -652,14 +652,13 @@ onClick={()=>navigate("/cart")}
 className="
 relative
 cursor-pointer
-hover:scale-95
 transition
 "
 
 >
 
 
-<ShoppingCart size={24}/>
+<ShoppingCart size={24} className={`${location.pathname === "/cart" ? "fill-black" : "hover:scale-95"}`}/>
 
 
 {

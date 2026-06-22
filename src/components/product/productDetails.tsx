@@ -92,7 +92,7 @@ export default function ProductDetails() {
               {product.category}
             </p>
 
-            <h1 className="text-2xl font-bold mt-2">
+            <h1 className="text-2xl font-semibold mt-2">
               {product.title}
             </h1>
 
