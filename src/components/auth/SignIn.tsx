@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { loginSchema, type LoginType } from "./schema";
-import { LoginUser } from "../../services/AuthService";
+import { toast } from "sonner";
 
 
 interface Props {
@@ -32,29 +32,19 @@ function SignIn({ onRegister }: Props) {
 
 
 
-  const handleLogin = async(data:LoginType)=>{
-
-    try{
-
-      const result = await LoginUser(data);
-
+  const handleLogin = async ()=>{
 
       localStorage.setItem(
-        "token",
-        result.token
+        "isAuthenticated",
+        "authenticated"
       );
 
 
       dispatch(authenticated(true));
+      toast.success("logged in")
 
       navigate("/", { replace: true });
 
-
-    }catch(error){
-
-      console.log(error);
-
-    }
 
   }
 
