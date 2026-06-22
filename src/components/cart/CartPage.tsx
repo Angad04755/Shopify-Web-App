@@ -13,6 +13,9 @@ const CartPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant"})
+  }, []);
+  useEffect(() => {
     const storedItems: CartItem[] = JSON.parse(
       localStorage.getItem("cart") || "[]"
     );
