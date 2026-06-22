@@ -477,7 +477,7 @@ items-center
 <h2
 
 className="
-font-bold
+font-semibold
 text-xl
 "
 
