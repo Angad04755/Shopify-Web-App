@@ -1,27 +1,80 @@
 "use client";
 
-import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../store/store";
-import {
-  addItem,
-  removeItem,
-  clearCart,
-  removeItemCompletely,
-} from "../../store/features/cart/cartSlice";
+import { useEffect, useMemo, useState } from "react";
 import PaypalButton from "../payment/PaypalButton";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Trash2 } from "lucide-react";
-import cart from "../../assets/images/cart.svg"
+import cart from "../../assets/images/cart.svg";
+import type { CartItem } from "../../types/CartItem";
 
 const CartPage = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const items = useSelector((state: RootState) => state.cart.items);
-  const navigate = useNavigate()
+  const [items, setItems] = useState<CartItem[]>([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedItems: CartItem[] = JSON.parse(
+      localStorage.getItem("cart") || "[]"
+    );
+
+    setItems(storedItems);
+  }, []);
+
+  const updateCart = (updatedCart: CartItem[]) => {
+    setItems(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
+  const addQuantity = (productId: number) => {
+    const updatedCart = [...items];
+
+    const item = updatedCart.find(
+      (item) => item.product.id === productId
+    );
+
+    if (item) {
+      item.quantity += 1;
+    }
+
+    updateCart(updatedCart);
+  };
+
+  const removeQuantity = (productId: number) => {
+    const updatedCart = [...items];
+
+    const item = updatedCart.find(
+      (item) => item.product.id === productId
+    );
+
+    if (!item) return;
+
+    if (item.quantity > 1) {
+      item.quantity -= 1;
+      updateCart(updatedCart);
+    } else {
+      const filteredCart = updatedCart.filter(
+        (item) => item.product.id !== productId
+      );
+
+      updateCart(filteredCart);
+    }
+  };
+
+  const removeItemCompletely = (productId: number) => {
+    const updatedCart = items.filter(
+      (item) => item.product.id !== productId
+    );
+
+    updateCart(updatedCart);
+  };
+
+  const clearCart = () => {
+    setItems([]);
+    localStorage.removeItem("cart");
+  };
 
   const totalQuantity = useMemo(
-    () => items.reduce((t, i) => t + i.quantity, 0),
+    () => items.reduce((total, item) => total + item.quantity, 0),
     [items]
   );
 
@@ -29,13 +82,20 @@ const CartPage = () => {
     () =>
       Number(
         items
-          .reduce((t, i) => t + i.product.price * i.quantity, 0)
+          .reduce(
+            (total, item) =>
+              total + item.product.price * item.quantity,
+            0
+          )
           .toFixed(2)
       ),
     [items]
   );
 
-  const vat = useMemo(() => Number((subtotal * 0.15).toFixed(2)), [subtotal]);
+  const vat = useMemo(
+    () => Number((subtotal * 0.15).toFixed(2)),
+    [subtotal]
+  );
 
   const totalPriceVat = useMemo(
     () => Number((subtotal + vat).toFixed(2)),
@@ -43,7 +103,7 @@ const CartPage = () => {
   );
 
   const handleSuccess = () => {
-    dispatch(clearCart());
+    clearCart();
     navigate("/success");
   };
 
@@ -54,11 +114,23 @@ const CartPage = () => {
       className="min-h-screen bg-gray-50 py-10"
     >
       {items.length === 0 && (
-        <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
-          <img src={cart} alt="empty" width={280} height={280} />
-          <h2 className="mt-6 text-xl font-semibold">Your cart is empty</h2>
-          <div className="mt-6" onClick={() => navigate("/")}>
-            <button className="bg-black text-white px-6 py-3 rounded-full">
+        <div className="flex flex-col items-center justify-center min-h-screen px-4 text-center">
+          <img
+            src={cart}
+            alt="empty cart"
+            width={280}
+            height={280}
+          />
+
+          <h2 className="mt-6 text-xl font-semibold">
+            Your cart is empty
+          </h2>
+
+          <div className="mt-6">
+            <button
+              onClick={() => navigate("/")}
+              className="rounded-full bg-black px-6 py-3 text-white"
+            >
               Continue Shopping
             </button>
           </div>
@@ -66,8 +138,8 @@ const CartPage = () => {
       )}
 
       {items.length > 0 && (
-        <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-4">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 lg:grid-cols-3">
+          <div className="space-y-4 lg:col-span-2">
             <h1 className="text-xl font-semibold">
               Shopping Cart ({totalQuantity})
             </h1>
@@ -75,14 +147,14 @@ const CartPage = () => {
             {items.map((item) => (
               <motion.div
                 key={item.product.id}
-                className="bg-white rounded-2xl p-4 shadow-sm border flex gap-4"
+                className="flex gap-4 rounded-2xl border bg-white p-4 shadow-sm"
               >
                 <img
                   src={item.product.thumbnail}
                   alt={item.product.title}
                   width={100}
                   height={100}
-                  className="rounded-xl"
+                  className="rounded-xl object-cover"
                 />
 
                 <div className="flex-1">
@@ -90,22 +162,26 @@ const CartPage = () => {
                     {item.product.title}
                   </h3>
 
-                  <div className="flex justify-between mt-4">
+                  <div className="mt-4 flex justify-between">
                     <span>${item.product.price}</span>
                     <span>Qty {item.quantity}</span>
                   </div>
 
-                  <div className="flex gap-4 mt-4">
+                  <div className="mt-4 flex items-center gap-4">
                     <button
-                      onClick={() => dispatch(addItem(item.product))}
+                      onClick={() =>
+                        addQuantity(item.product.id)
+                      }
+                      className="rounded-md border px-3 py-1"
                     >
                       + Add
                     </button>
 
                     <button
                       onClick={() =>
-                        dispatch(removeItem(item.product.id))
+                        removeQuantity(item.product.id)
                       }
+                      className="rounded-md border px-3 py-1"
                     >
                       Remove
                     </button>
@@ -113,7 +189,9 @@ const CartPage = () => {
                     <Trash2
                       className="cursor-pointer"
                       onClick={() =>
-                        dispatch(removeItemCompletely(item.product.id))
+                        removeItemCompletely(
+                          item.product.id
+                        )
                       }
                     />
                   </div>
@@ -122,8 +200,10 @@ const CartPage = () => {
             ))}
           </div>
 
-          <div className="bg-white rounded-3xl p-6 shadow-lg">
-            <h2 className="text-lg font-semibold mb-6">Order Summary</h2>
+          <div className="rounded-3xl bg-white p-6 shadow-lg">
+            <h2 className="mb-6 text-lg font-semibold">
+              Order Summary
+            </h2>
 
             <div className="space-y-3 text-sm">
               <div className="flex justify-between">
@@ -136,7 +216,7 @@ const CartPage = () => {
                 <span>${vat}</span>
               </div>
 
-              <div className="flex justify-between font-semibold border-t pt-4">
+              <div className="flex justify-between border-t pt-4 font-semibold">
                 <span>Total</span>
                 <span>${totalPriceVat}</span>
               </div>

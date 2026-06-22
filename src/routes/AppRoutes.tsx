@@ -7,7 +7,7 @@ const CartPage = lazy(() => import("../pages/CartPage"));
 const SearchPage = lazy(() => import("../pages/SearchPage"));
 const SigninPage = lazy(() => import("../pages/SigninPage"));
 const SignupPage = lazy(() => import("../pages/SignupPage"));
-
+const AuthLayout = lazy(() => import("../components/auth/AuthLayout"));
 
 function AppRoutes() {
     return (
@@ -17,7 +17,7 @@ function AppRoutes() {
             <Route path="/cart" element={<CartPage/>}/>
             <Route path="/search" element={<SearchPage/>}/>
             <Route path="/sign-up" element={<SignupPage/>}/>
-            <Route path="/sign-in" element={<SigninPage/>}/>
+            <Route path="/sign-in" element={<AuthLayout/>}/>
             <Route path="/category/:slug" element={<CategoryPage/>}/>
             <Route path="/product/product-details/:id" element={<ProductDetailsPage/>}/>
         </Routes>

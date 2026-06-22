@@ -1,133 +1,432 @@
-// SearchBox.tsx
-
 "use client";
+
 
 import {
   useNavigate,
   useSearchParams,
-  useLocation,
+  useLocation
 } from "react-router-dom";
 
-import { useState, useEffect } from "react";
 
-import { type Product } from "../product/types";
+import {
+  useEffect,
+  useState
+} from "react";
 
-import { SearchIcon } from "lucide-react";
 
-import { searchProduct } from "../../services/GetSearchProduct";
+import {
+  SearchIcon
+} from "lucide-react";
 
-interface SearchBoxProps {
-  Onsearch: (query: string) => void
-}
 
-const SearchBox = ({Onsearch}: SearchBoxProps) => {
-  const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<Product[]>([]);
+import {
+  searchProduct
+} from "../../services/GetSearchProduct";
+
+
+import {
+  type Product
+} from "../product/types";
+
+
+
+
+
+const SearchBox = () => {
+
+
+  const [query,setQuery] = useState("");
+
+  const [suggestions,setSuggestions] =
+  useState<Product[]>([]);
+
+
 
   const navigate = useNavigate();
+
   const location = useLocation();
 
-  const [searchParams] = useSearchParams();
 
-  // Suggestions
-  useEffect(() => {
-    if (!query.trim()) {
+  const [searchParams] =
+  useSearchParams();
+
+
+
+  const urlQuery =
+    searchParams.get("query");
+
+
+
+
+  // Fetch suggestions
+
+  useEffect(()=>{
+
+
+    if(!query.trim() || urlQuery === query){
+
       setSuggestions([]);
+
       return;
+
     }
 
-    const timer = setTimeout(async () => {
-      try {
-        const res = await searchProduct(query);
 
-        setSuggestions(res.products.slice(0, 6));
-      } catch (error) {
-        console.error(error);
+
+    const timer = setTimeout(async()=>{
+
+
+      try{
+
+
+        const data =
+        await searchProduct(query);
+
+
+
+        setSuggestions(
+          data.products.slice(0,6)
+        );
+
+
       }
-    }, 500);
+      catch(error){
 
-    return () => clearTimeout(timer);
-  }, [query]);
+        console.log(error);
 
-  // Clear on route change
-  useEffect(() => {
-    if (
-      location.pathname === "/" ||
-      location.pathname === "/cart"
-    ) {
-      setQuery("");
+      }
+
+
+
+    },500);
+
+
+
+    return ()=>clearTimeout(timer);
+
+
+
+  },[query]);
+
+
+
+
+
+
+
+
+  // Get query from URL
+
+  useEffect(()=>{
+
+
+
+    if(urlQuery){
+
+      setQuery(urlQuery);
+
       setSuggestions([]);
+
     }
-  }, [location.pathname]);
 
-  // Sync URL query
-  useEffect(() => {
-    const urlQuery = searchParams.get("query");
+    // if (!query || urlQuery === query) {
+    //   setSuggestions([])
+    // }
 
-    if (!urlQuery) return;
 
-    setQuery(urlQuery);
+  },[searchParams]);
 
-    setSuggestions([]);
-  }, [searchParams]);
 
-  const goToSearch = (value: string) => {
-    const trimmed = value.trim();
 
-    if (!trimmed) return;
 
-    setSuggestions([]);
 
-    navigate(`/search?query=${encodeURIComponent(trimmed)}`);
-    Onsearch(trimmed);
-  };
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+
+
+
+
+
+  const handleSubmit = (
+    e:React.FormEvent
+  )=>{
+
+
     e.preventDefault();
 
-    goToSearch(query);
+
+
+    const value =
+    query.trim();
+
+
+
+    if(!value)
+      return;
+
+
+
+    setSuggestions([]);
+
+
+
+    navigate(
+      `/search?query=${encodeURIComponent(value)}`
+    );
+
+
   };
 
-  return (
-    <div className="mt-10 flex justify-center">
-      <div className="w-full px-5 md:px-35">
-        <form
-          onSubmit={handleSubmit}
-          className="flex items-center rounded-full border border-gray-300 bg-white focus-within:ring-2 focus-within:ring-blue-500 transition duration-150 ease-in-out"
-        >
-          <SearchIcon
-            size={22}
-            color="gray"
-            className="ml-3"
-          />
 
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search products..."
-            className="flex-1 px-4 py-2 outline-none rounded-full"
-          />
-        </form>
 
-        {query.trim() && suggestions.length > 0 && (
-          <div className="top-12 z-50 rounded-xl bg-white shadow border overflow-hidden">
-            {suggestions.map((i) => (
-              <div
-                key={i.id}
-                onClick={() =>
-                  navigate(`/product/product-details/${i.id}`)
-                }
-                className="px-4 py-3 hover:bg-gray-100 cursor-pointer"
-              >
-                {i.title}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+
+
+
+
+
+
+return (
+
+
+<div
+
+className="
+
+sticky
+
+top-17.5
+
+z-100
+
+w-full
+
+backdrop-blur-xl
+
+bg-white/80
+
+py-5
+
+"
+
+>
+
+
+<div
+
+className="
+
+w-full
+
+px-5
+
+md:px-35
+
+"
+
+>
+
+
+
+<form
+
+onSubmit={handleSubmit}
+
+
+className="
+
+flex
+
+items-center
+
+rounded-full
+
+border
+
+border-gray-300
+
+bg-white
+
+shadow-md
+
+focus-within:ring-2
+
+focus-within:ring-blue-500
+
+transition
+
+"
+
+
+>
+
+
+<SearchIcon
+
+size={22}
+
+className="
+ml-4
+text-gray-500
+"
+
+/>
+
+
+
+
+<input
+
+
+value={query}
+
+
+onChange={(e)=>
+setQuery(e.target.value)
+}
+
+
+placeholder="Search products..."
+
+
+className="
+
+flex-1
+
+px-4
+
+py-3
+
+outline-none
+
+rounded-full
+
+"
+
+
+
+
+/>
+
+
+
+</form>
+
+
+
+
+
+
+
+{
+suggestions.length > 0 &&
+
+
+<div
+
+
+className="
+
+mt-2
+
+w-full
+
+bg-white
+
+rounded-xl
+
+shadow-xl
+
+border
+
+overflow-hidden
+
+"
+
+
+>
+
+
+{
+
+suggestions.map(item=>(
+
+
+<div
+
+
+key={item.id}
+
+
+onClick={()=>{
+
+
+navigate(
+`/product/product-details/${item.id}`
+);
+
+
+setSuggestions([]);
+
+
+}}
+
+
+
+className="
+
+px-5
+
+py-3
+
+cursor-pointer
+
+hover:bg-gray-100
+
+transition
+
+text-sm
+
+"
+
+
+>
+
+
+{item.title}
+
+
+
+</div>
+
+
+
+))
+
+
+}
+
+
+
+</div>
+
+
+}
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+)
+
+
 };
+
+
 
 export default SearchBox;

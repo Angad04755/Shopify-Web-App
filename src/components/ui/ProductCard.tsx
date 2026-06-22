@@ -1,11 +1,10 @@
 "use client";
 
-import { type Product } from "../product/types";
+import { type Product } from "../../types/Products";
 import { Heart, ShoppingBagIcon } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { addItem } from "../../store/features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
-
+import { Cart } from "../../utils/Cart";
+import { toast } from "sonner";
 interface ProductProps {
   product: Product;
 }
@@ -15,11 +14,10 @@ const ProductCard = ({ product }: ProductProps) => {
   const num = Math.round(rate);
   const ratingArray = new Array(num).fill(0);
   const navigate = useNavigate();
-  
-  const dispatch = useDispatch();
 
   const addToCartHandler = () => {
-    dispatch(addItem(product));
+    Cart(product);
+    toast.success("added to cart")
   };
 
   return (

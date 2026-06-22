@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import { addItem } from "../../store/features/cart/cartSlice";
-import { type Product } from "../product/types";
+import { type Product } from "../../types/Products";
 import Button from "../ui/Button";
 import { fetchProduct } from "../../services/GetProductById";
 import { toast } from "react-toastify";
