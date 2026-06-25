@@ -83,7 +83,7 @@ const SearchBox = () => {
 
 
         setSuggestions(
-          data.products.slice(0,6)
+          data.products.slice(0,3)
         );
 
 
@@ -146,31 +146,13 @@ const SearchBox = () => {
 
 
   const handleSubmit = (
-    e:React.FormEvent
+    query: string
   )=>{
 
-
-    e.preventDefault();
-
-
-
-    const value =
-    query.trim();
-
-
-
-    if(!value)
-      return;
-
-
-
-    setSuggestions([]);
-
-
-
     navigate(
-      `/search?query=${encodeURIComponent(value)}`
+      `/search?query=${query}`
     );
+    setSuggestions([]);
 
 
   };
@@ -225,9 +207,7 @@ md:px-35
 
 
 
-<form
-
-onSubmit={handleSubmit}
+<div
 
 
 className="
@@ -307,16 +287,14 @@ rounded-full
 
 
 
-</form>
+</div>
 
 
 
-
-
-
+<div>
 
 {
-suggestions.length > 0 &&
+suggestions &&
 
 
 <div
@@ -333,8 +311,6 @@ bg-white
 rounded-xl
 
 shadow-xl
-
-border
 
 overflow-hidden
 
@@ -357,20 +333,11 @@ key={item.id}
 
 onClick={()=>{
 
-
-navigate(
-`/product/product-details/${item.id}`
-);
-
-
-setSuggestions([]);
-
-
-}}
-
+handleSubmit(item.title)}}
 
 
 className="
+flex flex-row gap-5
 
 px-5
 
@@ -387,7 +354,7 @@ text-sm
 "
 
 
->
+><img src={item.thumbnail} width={35} height={35}/>
 
 
 {item.title}
@@ -409,6 +376,7 @@ text-sm
 
 
 }
+</div>
 
 
 
