@@ -15,7 +15,7 @@ const SearchDetails = () => {
 
   const [searchParams] = useSearchParams();
 
-  const searchQuery = searchParams.get("query") || "";
+  const searchQuery = searchParams.get("query");
 
   useEffect(() => {
     window.scrollTo({
