@@ -16,7 +16,6 @@ A modern e-commerce web application inspired by Shopify, built with React and Ty
 
 ## 🛠️ Tech Stack
 
-### Frontend
 - React.js
 - TypeScript
 - Tailwind CSS
