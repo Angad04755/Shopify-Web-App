@@ -280,7 +280,7 @@ rounded-full
 
 />
 <span className="mr-5">
-{query && <span><X/></span>}
+{query && <span className="cursor-pointer" onClick={() => setQuery("")}><X/></span>}
 </span>
 </form>
 
