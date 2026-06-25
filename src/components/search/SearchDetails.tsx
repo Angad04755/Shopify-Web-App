@@ -47,8 +47,6 @@ const SearchDetails = () => {
     fetchProducts();
   }, [searchQuery]);
 
-  const topResult = products[0];
-  const otherResults = products.slice(1);
 
   return (
     <motion.main
@@ -99,7 +97,7 @@ const SearchDetails = () => {
           </div>
         )}
 
-        {!loading && topResult && (
+        {!loading && products[0] && (
           <>
             <section className="mb-10">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -107,11 +105,11 @@ const SearchDetails = () => {
               </h2>
 
               <div className="max-w-xs">
-                <ProductCard product={topResult} />
+                <ProductCard product={products[0]} />
               </div>
             </section>
 
-            {otherResults.length > 0 && (
+            {products.slice(1).length > 0 && (
               <section>
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">
                   Related Results
@@ -139,7 +137,7 @@ const SearchDetails = () => {
                     gap-6
                   "
                 >
-                  {otherResults.map((product) => (
+                  {products.slice(1).map((product) => (
                     <motion.div
                       key={product.id}
                       variants={{

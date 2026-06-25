@@ -1,18 +1,14 @@
-"use client";
-
-import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
-import { addItem } from "../../store/features/cart/cartSlice";
 import { type Product } from "../../types/Products";
 import Button from "../ui/Button";
 import { fetchProduct } from "../../services/GetProductById";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
+import { Cart } from "../../utils/Cart";
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const dispatch = useDispatch();
 
   const [product, setProduct] = useState<Product>();
   const [isLoading, setIsLoading] = useState(true);
@@ -37,12 +33,12 @@ export default function ProductDetails() {
     getProduct();
   }, [id]);
 
+
   const handleAddItem = useCallback(() => {
-    if (product) {
-      dispatch(addItem(product));
-      toast.success("Added to cart");
-    }
-  }, [product, dispatch]);
+    if (!product) return;
+    Cart(product);
+    toast.success("added to cart")
+  }, [product]);
 
   // ✅ Loading
   if (isLoading) {
@@ -117,7 +113,7 @@ export default function ProductDetails() {
           <Button
             text="Add to Cart"
             onClick={handleAddItem}
-            classname="px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-800"
+            classname="px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 cursor-pointer active:scale-95 transition"
           />
         </div>
       </motion.div>

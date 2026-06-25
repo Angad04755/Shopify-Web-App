@@ -3,11 +3,6 @@
 
 import { useState } from "react";
 
-import { useDispatch } from "react-redux";
-
-import { Register as RegisterAction }
-    from "../../store/features/auth/registerSlice";
-
 
 import { useForm } from "react-hook-form";
 
@@ -21,10 +16,6 @@ import {
 } from "./schema";
 
 
-import { RegisterUser }
-    from "../../services/AuthService";
-
-
 interface Props {
     onLogin: () => void;
 }
@@ -32,9 +23,6 @@ interface Props {
 
 
 function Register({ onLogin }: Props) {
-
-
-    const dispatch = useDispatch();
 
 
     const [loading, setLoading] = useState(false);
@@ -52,34 +40,21 @@ function Register({ onLogin }: Props) {
 
 
 
-    const handleRegister = async (data: RegisterType) => {
+    const handleRegister = async () => {
 
 
         try {
 
             setLoading(true);
 
-
-            await RegisterUser(data);
-
-
-            dispatch(RegisterAction(true));
-
-
             onLogin();
-
-
 
         }
         catch (error) {
-
             console.log(error);
-
         }
         finally {
-
             setLoading(false);
-
         }
 
 

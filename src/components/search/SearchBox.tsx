@@ -14,7 +14,7 @@ import {
 
 
 import {
-  SearchIcon
+  SearchIcon, X
 } from "lucide-react";
 
 
@@ -127,11 +127,6 @@ const SearchBox = () => {
 
     }
 
-    // if (!query || urlQuery === query) {
-    //   setSuggestions([])
-    // }
-
-
   },[searchParams]);
 
 
@@ -146,9 +141,9 @@ const SearchBox = () => {
 
 
   const handleSubmit = (
-    query: string
+    query: string, e: any
   )=>{
-
+    e.preventDefault();
     navigate(
       `/search?query=${query}`
     );
@@ -182,7 +177,7 @@ w-full
 
 backdrop-blur-xl
 
-bg-white/80
+bg-white
 
 py-5
 
@@ -207,7 +202,7 @@ md:px-35
 
 
 
-<div
+<form
 
 
 className="
@@ -233,7 +228,7 @@ focus-within:ring-blue-500
 transition
 
 "
-
+onSubmit={(e) => handleSubmit(query, e)}
 
 >
 
@@ -284,17 +279,17 @@ rounded-full
 
 
 />
-
-
-
-</div>
+<span className="mr-5">
+{query && <span><X/></span>}
+</span>
+</form>
 
 
 
 <div>
 
 {
-suggestions &&
+suggestions.length > 0 &&
 
 
 <div
@@ -331,9 +326,9 @@ suggestions.map(item=>(
 key={item.id}
 
 
-onClick={()=>{
+onClick={(e)=>{
 
-handleSubmit(item.title)}}
+handleSubmit(item.title, e)}}
 
 
 className="
