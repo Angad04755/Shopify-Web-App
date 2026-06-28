@@ -846,7 +846,7 @@ py-3
 text-red-500
 
 hover:bg-red-50
-
+cursor-pointer
 "
 
 >

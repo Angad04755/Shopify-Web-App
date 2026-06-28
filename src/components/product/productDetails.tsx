@@ -113,7 +113,7 @@ export default function ProductDetails() {
           <Button
             text="Add to Cart"
             onClick={handleAddItem}
-            classname="px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 cursor-pointer active:scale-95 transition"
+            classname="px-3 py-2 rounded-xl bg-blue-600 text-white active:bg-blue-700 cursor-pointer transition"
           />
         </div>
       </motion.div>
