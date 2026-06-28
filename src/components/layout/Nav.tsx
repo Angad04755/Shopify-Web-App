@@ -214,7 +214,7 @@ onClick={()=>setIsOpen(true)}
 
 >
 
-<Menu size={28}/>
+<Menu size={28} color="gray"/>
 
 
 </button>
@@ -250,7 +250,7 @@ className="w-10 h-10"
 
 className="
 font-semibold
-text-black
+text-gray-700
 text-2xl
 "
 
@@ -286,7 +286,7 @@ gap-6
 
 <button className={`${location.pathname === "/search" ? "bg-white" : ""} hover:bg-white px-2 py-2 rounded-full transition`}><SearchIcon
 
-size={24}
+size={24} color="gray"
 
 className={`cursor-pointer ${location.pathname === "/search" ? "fill-black" : ""}`}
 
@@ -295,15 +295,14 @@ onClick={()=>navigate("/search")}
 /></button>
 
 
-<button><HeartIcon
+<button><HeartIcon color="gray"
 
 className="cursor-pointer"
 
 /></button>
 
 
-
-<CartIcon
+ <CartIcon
 />
 
 
@@ -342,7 +341,7 @@ gap-4
 
 <button className={`${location.pathname === "/search" ? "bg-white" : ""} hover:bg-white px-2 py-2 rounded-full transition`}><SearchIcon
 
-size={24}
+size={24} color="gray"
 
 className={`cursor-pointer ${location.pathname === "/search" ? "fill-black" : ""}`}
 
@@ -352,8 +351,8 @@ onClick={()=>navigate("/search")}
 
 
 
-<CartIcon
-/>
+{/* <CartIcon
+/> */}
 
 
 
@@ -477,6 +476,7 @@ items-center
 <h2
 
 className="
+text-gray-700
 font-semibold
 text-xl
 "
@@ -495,7 +495,7 @@ onClick={()=>setIsOpen(false)}
 
 >
 
-<X size={25}/>
+<X size={25} color="gray"/>
 
 </button>
 
@@ -523,14 +523,15 @@ items-center
 gap-3
 p-4
 rounded-xl
-border
+border-1 border-gray-700
 hover:bg-gray-50
+text-gray-700
 cursor-pointer
 "
 
 >
 
-<HeartIcon/>
+<HeartIcon color="gray"/>
 
 Favorites
 
@@ -556,15 +557,16 @@ items-center
 gap-3
 p-4
 rounded-xl
-border
+border-1 border-gray-700
 hover:bg-gray-50
+text-gray-700
 cursor-pointer
 "
 
 >
 
 
-<ShoppingCart/>
+<ShoppingCart color="gray"/>
 
 
 Cart
@@ -657,7 +659,7 @@ return (
   onClick={() => navigate("/cart")}
 >
   <ShoppingCart
-    size={24}
+    size={24} color="gray"
     className={location.pathname === "/cart" ? "fill-black" : ""}
   />
 </button>
@@ -701,21 +703,24 @@ return (
 onClick={()=>navigate("/sign-in")}
 
 className="
-border
+border-1
+border-gray-700
 px-3
 py-2
 rounded-lg
-text-sm
+text-xs
+text-gray-700
 font-medium
-hover:bg-black/80
+hover:bg-gray-700
 hover:text-white
+active:bg-gray-800
 transition
 cursor-pointer
 "
 
 >
 
-Sign In
+Log In
 
 </button>
 
@@ -740,12 +745,12 @@ return (
     cursor-pointer
     transition
     bg-indigo-200
-    hover:bg-indigo-200/80
-    ${profileOpen ? "bg-indigo-200/80" : ""}
+    hover:bg-indigo-300
+    ${profileOpen ? "bg-indigo-300" : ""}
   `}
 >
   <User
-    size={20}
+    size={20} color="gray"
     className={profileOpen ? "fill-black" : ""}
   />
 </button>
@@ -821,7 +826,7 @@ My Account
 </p>
 
 
-<p className="text-xs text-gray-500">
+<p className="text-xs text-gray-700">
 
 Welcome back
 
@@ -843,7 +848,7 @@ text-left
 px-4
 py-3
 
-text-red-500
+text-red-700
 
 hover:bg-red-50
 cursor-pointer

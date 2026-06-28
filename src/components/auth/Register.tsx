@@ -68,12 +68,12 @@ function Register({ onLogin }: Props) {
         <div>
 
 
-            <h1 className="text-3xl font-semibold text-gray-800 mb-2">
+            <h1 className="text-3xl font-semibold text-gray-700 mb-2">
                 Create Account
             </h1>
 
 
-            <p className="text-gray-500 mb-8">
+            <p className="text-gray-700 mb-8">
                 Register yourself
             </p>
 
@@ -85,23 +85,21 @@ function Register({ onLogin }: Props) {
             >
 
 
-
+                <label className="text-gray-700">Email</label>
                 <input
 
                     {...register("email")}
 
                     type="email"
 
-                    placeholder="Email"
-
-                    className="w-full px-4 py-3 rounded-xl border"
+                    className="w-full px-4 py-3 border-b-1 border-gray-700 focus-within:ring-2 focus-within:ring-purple-700 outline-none transition"
 
                 />
 
 
                 {
                     errors.email &&
-                    <p className="text-red-500 text-sm">
+                    <p className="text-red-700 text-sm">
                         {errors.email.message}
                     </p>
                 }
@@ -109,16 +107,14 @@ function Register({ onLogin }: Props) {
 
 
 
-
+                <label className="text-gray-700">Password</label>
                 <input
 
                     {...register("password")}
 
                     type="password"
 
-                    placeholder="Password"
-
-                    className="w-full px-4 py-3 rounded-xl border"
+                    className="w-full px-4 py-3 border-b-1 border-gray-700 focus-within:ring-2 focus-within:ring-purple-700 outline-none transition"
 
                 />
 
@@ -126,7 +122,7 @@ function Register({ onLogin }: Props) {
 
                 {
                     errors.password &&
-                    <p className="text-red-500 text-sm">
+                    <p className="text-red-700 text-sm">
                         {errors.password.message}
                     </p>
                 }
@@ -145,7 +141,8 @@ text-white
 py-3
 rounded-xl
 disabled:opacity-50
-hover:bg-purple-600/70
+hover:bg-purple-700
+active:bg-purple-800
 transition
 cursor-pointer
 "
@@ -167,7 +164,7 @@ cursor-pointer
 
 
 
-            <p className="mt-6 text-center text-gray-600">
+            <p className="mt-6 text-center text-gray-700">
 
 
                 Already have account?
@@ -175,7 +172,7 @@ cursor-pointer
 
                 <button
                     onClick={onLogin}
-                    className="ml-2 text-purple-600 font-semibold hover:underline cursor-pointer"
+                    className="ml-2 text-purple-700 font-semibold hover:underline cursor-pointer"
                 >
 
                     Sign In

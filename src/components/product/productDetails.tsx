@@ -84,21 +84,21 @@ export default function ProductDetails() {
         {/* Details */}
         <div className="p-6 sm:p-8 flex flex-col justify-between gap-5">
           <div>
-            <p className="text-sm uppercase text-gray-500">
+            <p className="text-sm uppercase text-gray-700">
               {product.category}
             </p>
 
-            <h1 className="text-2xl font-semibold mt-2">
+            <h1 className="text-gray-700 text-2xl font-semibold mt-2">
               {product.title}
             </h1>
 
-            <p className="text-gray-600 mt-4">
+            <p className="text-gray-700 mt-4">
               {product.description}
             </p>
 
             <div className="flex items-center mt-4">
-              <span className="text-yellow-500">★</span>
-              <span className="ml-2 text-sm text-gray-600">
+              <span className="text-yellow-300">★</span>
+              <span className="ml-2 text-sm text-gray-700">
                 {product.rating
                   ? `${product.rating} / 5 rating`
                   : "No ratings yet"}
@@ -113,7 +113,7 @@ export default function ProductDetails() {
           <Button
             text="Add to Cart"
             onClick={handleAddItem}
-            classname="px-3 py-2 rounded-xl bg-blue-600 text-white active:bg-blue-700 cursor-pointer transition"
+            classname="px-3 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 cursor-pointer transition"
           />
         </div>
       </motion.div>

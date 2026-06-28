@@ -98,7 +98,7 @@ const CartPage = () => {
           <div className="mt-6">
             <button
               onClick={() => navigate("/")}
-              className="rounded-full bg-black px-6 py-3 text-white cursor-pointer active:bg-gray-800"
+              className="rounded-full bg-gray-700 px-6 py-3 text-white cursor-pointer hover:bg-gray-800 active:bg-gray-900"
             >
               Continue Shopping
             </button>
@@ -117,10 +117,10 @@ const CartPage = () => {
     >
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
-          <span className="float-right cursor-pointer active:text-gray-700" onClick={clearCart}>
+          <span className="float-right cursor-pointer text-gray-700 hover:text-gray-800 active:text-gray-900" onClick={clearCart}>
             Clear cart
           </span>
-          <h1 className="text-xl font-semibold">
+          <h1 className="text-gray-700 text-xl font-semibold">
             Shopping Cart ({totalQuantity})
           </h1>
 
@@ -170,7 +170,7 @@ const CartPage = () => {
           ))}
         </div>
 
-        <div className="rounded-3xl bg-white p-6 shadow-lg flex flex-col h-full">
+        <div className="rounded-3xl bg-white p-6 shadow-lg flex flex-col h-full text-gray-700">
           <h2 className="mb-6 text-lg font-semibold">Order Summary</h2>
 
           <div className="space-y-3 text-sm">
@@ -191,7 +191,7 @@ const CartPage = () => {
           </div>
 
           <div className="mt-auto pt-6">
-            <button className="w-full rounded-lg bg-yellow-300 px-5 py-3 font-medium active:bg-yellow-400 transition cursor-pointer">
+            <button className="w-full rounded-lg bg-yellow-300 px-5 py-3 font-medium hover:bg-yellow-400 active:bg-yellow-500 transition cursor-pointer">
               Checkout
             </button>
           </div>

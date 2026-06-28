@@ -222,11 +222,8 @@ function AuthLayout() {
 
 
             className="
-
-            text-black
-
+            text-gray-700
             text-2xl
-
             font-semibold
 
             "
@@ -284,7 +281,7 @@ function AuthLayout() {
 
           text-sm
             font-semibold
-          text-gray-600
+          text-gray-700
 
           "
 

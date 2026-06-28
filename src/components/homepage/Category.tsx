@@ -49,11 +49,11 @@ const Category = () => {
         <div
           className="text-center mb-16"
         >
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-semibold text-gray-900">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-semibold text-gray-700">
             Shop by Category
           </h1>
 
-          <p className="mt-5 text-gray-500 text-base sm:text-lg">
+          <p className="mt-5 text-gray-700 text-base sm:text-lg">
             Discover products curated just for you
           </p>
 
@@ -72,7 +72,7 @@ const Category = () => {
                 )
               }
               className="
-                bg-white text-black py-10 cursor-pointer hover:ring-2 hover:ring-blue-400 transition duration-300 ease-in-out rounded-2xl hover:bg-black hover:text-white
+                bg-white text-gray-700 py-10 cursor-pointer hover:ring-2 hover:ring-blue-400 transition duration-300 ease-in-out rounded-2xl hover:bg-black hover:text-white
               "
             >
               

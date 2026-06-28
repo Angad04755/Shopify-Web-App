@@ -133,7 +133,7 @@ const DesktopProducts = () => {
       <div className="float-right">
         <SelectableButton option={options} selected={sortBy} onSelect={setSortBy}/>
       </div>
-      <h1 className="text-2xl font-semibold mb-6 capitalize">
+      <h1 className="text-gray-700 text-2xl font-semibold mb-6 capitalize">
         {slug || "Products"}
       </h1>
       

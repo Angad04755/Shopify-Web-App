@@ -34,13 +34,13 @@ const ProductCard = ({ product }: ProductProps) => {
       </div>
 
       {/* Category */}
-      <p className="mt-3 text-sm sm:text-base capitalize text-gray-500">
+      <p className="mt-3 text-sm sm:text-base capitalize text-gray-700">
         {product.category}
       </p>
 
       {/* Title */}
       <div onClick={() => navigate(`/product/product-details/${product.id}`)}>
-        <h1 className="mt-1 text-base sm:text-lg font-semibold text-black cursor-pointer hover:text-blue-700 hover:underline line-clamp-2">
+        <h1 className="mt-1 text-base sm:text-lg font-semibold text-gray-700 cursor-pointer hover:text-gray-800 hover:underline line-clamp-2">
           {product.title}
         </h1>
       </div>
@@ -67,7 +67,7 @@ const ProductCard = ({ product }: ProductProps) => {
       {/* Ratings */}
       <div className="flex items-center mt-2">
         {ratingArray.map((_, i) => (
-          <span key={i} className="text-yellow-500 text-sm">
+          <span key={i} className="text-yellow-300 text-sm">
             ★
           </span>
         ))}

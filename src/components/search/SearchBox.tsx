@@ -213,19 +213,14 @@ items-center
 
 rounded-full
 
-border
+border-2
 
-border-gray-300
+border-blue-500
 
 bg-white
 
 shadow-md
 
-focus-within:ring-2
-
-focus-within:ring-blue-500
-
-transition
 
 "
 onSubmit={(e) => handleSubmit(query, e)}

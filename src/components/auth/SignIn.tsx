@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { loginSchema, type LoginType } from "./schema";
 import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
 
 
 interface Props {
@@ -53,13 +54,13 @@ function SignIn({ onRegister }: Props) {
   return (
 
     <div>
+      <button className="md:hidden" onClick={() => navigate("/")}><ArrowLeft size={25}/></button>
 
-
-      <h1 className="text-3xl font-semibold text-gray-800 mb-2">
+      <h1 className="text-3xl font-semibold text-gray-700 mb-2">
         Welcome Back
       </h1>
 
-      <p className="text-gray-500 mb-8">
+      <p className="text-gray-700 mb-8">
         Login to your account
       </p>
 
@@ -72,12 +73,11 @@ function SignIn({ onRegister }: Props) {
 
 
         <div>
-
+        <label className="text-gray-700">Email</label>
         <input
-        {...register("email")}
+        {...register("email", { setValueAs: (value) => String(value) })}
         type="email"
-        placeholder="Email"
-        className="w-full px-4 py-3 rounded-xl border"
+        className="w-full px-4 py-3 border-b-1 border-gray-700 outline-none focus-within:ring-2 focus-within:ring-purple-500 transition"
         />
 
 
@@ -94,18 +94,17 @@ function SignIn({ onRegister }: Props) {
 
 
         <div>
-
+        <label className="text-gray-700">Password</label>
         <input
-        {...register("password")}
+        {...register("password", { setValueAs: (value) => String(value) })}
         type="password"
-        placeholder="Password"
-        className="w-full px-4 py-3 rounded-xl border"
+        className="w-full px-4 py-3 border-b-1 border-gray-700 focus-within:ring-2 focus-within:ring-purple-700 transition outline-none"
         />
 
 
         {
           errors.password &&
-          <p className="text-red-500 text-sm">
+          <p className="text-red-700 text-sm">
             {errors.password.message}
           </p>
         }
@@ -123,7 +122,8 @@ function SignIn({ onRegister }: Props) {
         text-white 
         py-3 
         rounded-xl
-        hover:bg-purple-600/70
+        hover:bg-purple-700
+        active:bg-purple-800
         transition
         cursor-pointer
         "
@@ -137,14 +137,14 @@ function SignIn({ onRegister }: Props) {
 
 
 
-      <p className="mt-6 text-center text-gray-600">
+      <p className="mt-6 text-center text-gray-700">
 
         Don't have account?
 
 
         <button
         onClick={onRegister}
-        className="ml-2 text-purple-600 font-semibold hover:underline cursor-pointer"
+        className="ml-2 text-purple-700 font-semibold hover:underline cursor-pointer"
         >
           Register
         </button>

@@ -11,20 +11,20 @@ interface option  {
 
 function SelectableButton({ option, selected, onSelect }: SelectableButtonProps) {
     return (
-        <button className="text-black">
+        <button>
             <select className="rounded-lg
-        border border-[#3c3c3c]
-        bg-gradient-to-b from-[#2b2b2b] to-[#1f1f1f]
+        bg-gray-900
+        border-2 border-gray-900
         px-2 py-2
         text-sm font-medium text-[#e5e5e5]
-        shadow-md
+        shadow-lg
         outline-none
         cursor-pointer
         transition
         " value={selected} onChange={(e) => onSelect(e.target.value)}>
             {option.map((option) => 
             
-                <option className="bg-black text-white" key={option.value} value={option.value}>{option.label}</option>
+                <option className="bg-gray-900 text-white rounded-lg" key={option.value} value={option.value}>{option.label}</option>
             )}
             </select>
         </button>
