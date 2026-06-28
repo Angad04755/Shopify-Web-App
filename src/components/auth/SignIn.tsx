@@ -56,11 +56,11 @@ function SignIn({ onRegister }: Props) {
     <div>
       <button className="md:hidden" onClick={() => navigate("/")}><ArrowLeft size={25} color="gray"/></button>
 
-      <h1 className="text-3xl font-semibold text-gray-700 mb-2">
+      <h1 className="text-3xl font-semibold text-gray-400 mb-2">
         Welcome Back
       </h1>
 
-      <p className="text-gray-700 mb-8">
+      <p className="text-gray-400 mb-8">
         Login to your account
       </p>
 
@@ -73,11 +73,11 @@ function SignIn({ onRegister }: Props) {
 
 
         <div>
-        <label className="text-gray-700">Email</label>
+        <label className="text-gray-400">Email</label>
         <input
         {...register("email", { setValueAs: (value) => String(value) })}
         type="email"
-        className="w-full px-4 py-3 border-b-1 border-gray-700 outline-none focus-within:ring-2 focus-within:ring-purple-500 transition"
+        className="w-full px-4 py-3 border-b-1 border-gray-400 outline-none focus-within:ring-2 focus-within:ring-purple-500 transition"
         />
 
 
@@ -94,17 +94,17 @@ function SignIn({ onRegister }: Props) {
 
 
         <div>
-        <label className="text-gray-700">Password</label>
+        <label className="text-gray-400">Password</label>
         <input
         {...register("password", { setValueAs: (value) => String(value) })}
         type="password"
-        className="w-full px-4 py-3 border-b-1 border-gray-700 focus-within:ring-2 focus-within:ring-purple-700 transition outline-none"
+        className="w-full px-4 py-3 border-b-1 border-gray-400 focus-within:ring-2 focus-within:ring-purple-700 transition outline-none"
         />
 
 
         {
           errors.password &&
-          <p className="text-red-700 text-sm">
+          <p className="text-red-400 text-sm">
             {errors.password.message}
           </p>
         }
@@ -137,7 +137,7 @@ function SignIn({ onRegister }: Props) {
 
 
 
-      <p className="mt-6 text-center text-gray-700">
+      <p className="mt-6 text-center text-gray-400">
 
         Don't have account?
 
