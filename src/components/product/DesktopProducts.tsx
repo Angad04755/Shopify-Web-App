@@ -1,5 +1,5 @@
 "use client";
-
+import SelectableButton from "../ui/SelectableButton";
 import { useState, useEffect } from "react";
 import { getProductsByCategory } from "../../services/GetProductByCategory";
 import ProductCard from "../ui/ProductCard";
@@ -12,10 +12,18 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-const productsPerPage = 4;
+
 
 const DesktopProducts = () => {
   const [page, setPage] = useState(0);
+  const productsPerPage = 4;
+  const options = [
+    {label: "Low - High", value: "price_asc"},
+    {label: "High - Low", value: "price_desc"},
+    {label: "Default", value: ""},
+  ] 
+  
+  const [sortBy, setSortBy] = useState("")
 
   const [loading, setLoading] =
     useState(false);
@@ -70,6 +78,8 @@ const DesktopProducts = () => {
     });
   }, [products]);
 
+  const displayedProducts = sortBy === "Default" ? products : [...products].sort((a, b) => sortBy === "price_asc" ? a.price - b.price : b.price - a.price);
+
   const TOTAL_PAGES = Math.ceil(
     total / productsPerPage
   );
@@ -120,16 +130,19 @@ const DesktopProducts = () => {
 
   return (
     <section className="min-h-screen max-w-7xl mx-auto px-6 py-8">
+      <div className="float-right">
+        <SelectableButton option={options} selected={sortBy} onSelect={setSortBy}/>
+      </div>
       <h1 className="text-2xl font-semibold mb-6 capitalize">
         {slug || "Products"}
       </h1>
-
+      
       <motion.div
         initial={false}
         animate={{ opacity: 1 }}
         className="grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr_1fr] gap-6"
       >
-        {products.map((product) => (
+        {displayedProducts.map((product) => (
           <motion.div
             key={product.id}
             initial={{
