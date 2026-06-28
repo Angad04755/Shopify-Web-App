@@ -2,8 +2,8 @@
 
 
 import { useState } from "react";
-
-
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import { zodResolver }
@@ -24,7 +24,7 @@ interface Props {
 
 function Register({ onLogin }: Props) {
 
-
+    const navigate = useNavigate()
     const [loading, setLoading] = useState(false);
 
 
@@ -66,7 +66,7 @@ function Register({ onLogin }: Props) {
     return (
 
         <div>
-
+            <button className="md:hidden" onClick={() => navigate("/")}><ArrowLeft size={25} color="gray"/></button>
 
             <h1 className="text-3xl font-semibold text-gray-700 mb-2">
                 Create Account

@@ -54,7 +54,7 @@ function SignIn({ onRegister }: Props) {
   return (
 
     <div>
-      <button className="md:hidden" onClick={() => navigate("/")}><ArrowLeft size={25}/></button>
+      <button className="md:hidden" onClick={() => navigate("/")}><ArrowLeft size={25} color="gray"/></button>
 
       <h1 className="text-3xl font-semibold text-gray-700 mb-2">
         Welcome Back
