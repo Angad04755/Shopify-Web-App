@@ -5,7 +5,11 @@ import carousal4 from "../../assets/carousal/carousal-4.jpg"
 import Carousal from "./Carousal";
 const Hero = () => {
 
-  const Images = [carousal1, carousal2, carousal3, carousal4];
+  const Images = [{id: 1, src: carousal1},
+                  {id: 2, src: carousal2},
+                  {id: 3, src: carousal3}, 
+                  {id: 4, src: carousal4}
+                ];
   return (
     <section
       className="relative w-full
