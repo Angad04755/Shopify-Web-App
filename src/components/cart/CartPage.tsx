@@ -19,6 +19,7 @@ const CartPage = () => {
     const storedItems: CartItem[] = JSON.parse(
       localStorage.getItem("cart") || "[]"
     );
+
     setItems(storedItems);
   }, []);
 
@@ -28,32 +29,32 @@ const CartPage = () => {
   };
 
   const addQuantity = (productId: number) => {
-    const updatedCart = [...items];
-    const item = updatedCart.find((item) => item.product.id === productId);
-    if (item) {
-      item.quantity += 1;
-    }
+    const updatedCart = items.map((item) =>
+      item.product.id === productId
+        ? { ...item, quantity: item.quantity + 1 }
+        : item
+    );
+
     updateCart(updatedCart);
   };
 
   const removeQuantity = (productId: number) => {
-    const updatedCart = [...items];
-    const item = updatedCart.find((item) => item.product.id === productId);
-    if (!item) return;
+    const updatedCart = items
+      .map((item) =>
+        item.product.id === productId
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+      .filter((item) => item.quantity > 0);
 
-    if (item.quantity > 1) {
-      item.quantity -= 1;
-      updateCart(updatedCart);
-    } else {
-      const filteredCart = updatedCart.filter(
-        (item) => item.product.id !== productId
-      );
-      updateCart(filteredCart);
-    }
+    updateCart(updatedCart);
   };
 
   const removeItemCompletely = (productId: number) => {
-    const updatedCart = items.filter((item) => item.product.id !== productId);
+    const updatedCart = items.filter(
+      (item) => item.product.id !== productId
+    );
+
     updateCart(updatedCart);
   };
 
@@ -71,20 +72,26 @@ const CartPage = () => {
     () =>
       Number(
         items
-          .reduce((total, item) => total + item.product.price * item.quantity, 0)
+          .reduce(
+            (total, item) =>
+              total + item.product.price * item.quantity,
+            0
+          )
           .toFixed(2)
       ),
     [items]
   );
 
-  const vat = useMemo(() => Number((subtotal * 0.15).toFixed(2)), [subtotal]);
+  const vat = useMemo(
+    () => Number((subtotal * 0.15).toFixed(2)),
+    [subtotal]
+  );
 
   const totalPriceVat = useMemo(
     () => Number((subtotal + vat).toFixed(2)),
     [subtotal, vat]
   );
 
-  // ✅ FIX: Empty cart state is now a standalone early return (no nested JSX below it)
   if (items.length === 0) {
     return (
       <motion.div
@@ -92,13 +99,17 @@ const CartPage = () => {
         animate={{ opacity: 1 }}
         className="min-h-screen bg-gray-50 py-10"
       >
-        <div className="flex flex-col items-center justify-center min-h-screen px-4 text-center">
+        <div className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
           <img src={cart} alt="empty cart" width={280} height={280} />
-          <h2 className="mt-6 text-xl font-semibold">Your cart is empty</h2>
+
+          <h2 className="mt-6 text-xl font-semibold">
+            Your cart is empty
+          </h2>
+
           <div className="mt-6">
             <button
               onClick={() => navigate("/")}
-              className="rounded-full bg-gray-700 px-6 py-3 text-white cursor-pointer hover:bg-gray-800 active:bg-gray-900"
+              className="cursor-pointer rounded-full bg-gray-700 px-6 py-3 text-white hover:bg-gray-800 active:bg-gray-900"
             >
               Continue Shopping
             </button>
@@ -108,7 +119,6 @@ const CartPage = () => {
     );
   }
 
-  // ✅ FIX: Main cart UI is now a separate return, reached only when items exist
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -117,10 +127,14 @@ const CartPage = () => {
     >
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
-          <span className="float-right cursor-pointer text-gray-700 hover:text-gray-800 active:text-gray-900" onClick={clearCart}>
+          <span
+            className="float-right cursor-pointer text-gray-700 hover:text-gray-800 active:text-gray-900"
+            onClick={clearCart}
+          >
             Clear cart
           </span>
-          <h1 className="text-gray-700 text-xl font-semibold">
+
+          <h1 className="text-xl font-semibold text-gray-700">
             Shopping Cart ({totalQuantity})
           </h1>
 
@@ -138,7 +152,9 @@ const CartPage = () => {
               />
 
               <div className="flex-1">
-                <h3 className="text-sm font-medium">{item.product.title}</h3>
+                <h3 className="text-sm font-medium">
+                  {item.product.title}
+                </h3>
 
                 <div className="mt-4 flex justify-between">
                   <span>${item.product.price}</span>
@@ -162,7 +178,9 @@ const CartPage = () => {
 
                   <Trash2
                     className="cursor-pointer"
-                    onClick={() => removeItemCompletely(item.product.id)}
+                    onClick={() =>
+                      removeItemCompletely(item.product.id)
+                    }
                   />
                 </div>
               </div>
@@ -170,8 +188,10 @@ const CartPage = () => {
           ))}
         </div>
 
-        <div className="rounded-3xl bg-white p-6 shadow-lg flex flex-col h-full text-gray-700">
-          <h2 className="mb-6 text-lg font-semibold">Order Summary</h2>
+        <div className="flex h-full flex-col rounded-3xl bg-white p-6 text-gray-700 shadow-lg">
+          <h2 className="mb-6 text-lg font-semibold">
+            Order Summary
+          </h2>
 
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
@@ -191,7 +211,7 @@ const CartPage = () => {
           </div>
 
           <div className="mt-auto pt-6">
-            <button className="w-full rounded-lg bg-yellow-300 px-5 py-3 font-medium hover:bg-yellow-400 active:bg-yellow-500 transition cursor-pointer">
+            <button className="w-full cursor-pointer rounded-lg bg-yellow-300 px-5 py-3 font-medium transition hover:bg-yellow-400 active:bg-yellow-500">
               Checkout
             </button>
           </div>
