@@ -28,26 +28,35 @@ const CartPage = () => {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const addQuantity = (productId: number) => {
-    const updatedCart = items.map((item) =>
-      item.product.id === productId
-        ? { ...item, quantity: item.quantity + 1 }
-        : item
-    );
+  // const addQuantity = (productId: number) => {
+  //   const updatedCart = items.map((item) =>
+  //     item.product.id === productId
+  //       ? { ...item, quantity: item.quantity + 1 }
+  //       : item
+  //   );
 
-    updateCart(updatedCart);
-  };
+  //   updateCart(updatedCart);
+  // };
+
+  const addQuantity = (productId: number) => {
+    const updatedCart = items.map((item) => 
+      items.find((item) => item.product.id === productId) ? 
+      {
+        ...item,
+        quantity: items.find((item) => item.product.id === productId).quantity + 1
+      } : 
+        item
+    )
+    updateCart(updatedCart)
+  }
 
   const removeQuantity = (productId: number) => {
-    const updatedCart = items
-      .map((item) =>
-        item.product.id === productId
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-      .filter((item) => item.quantity > 0);
-
-    updateCart(updatedCart);
+    const updateItems = items.map((item) =>
+      items.find((item) => item.product.id === productId) ? {
+        ...item, quantity: items.find((item) => item.product.id === productId).quantity - 1
+      } : item
+    )
+    updateCart(updateItems)
   };
 
   const removeItemCompletely = (productId: number) => {
