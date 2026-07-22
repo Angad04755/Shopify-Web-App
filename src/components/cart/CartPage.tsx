@@ -29,25 +29,24 @@ const CartPage = () => {
   };
 
   const addQuantity = (productId: number) => {
-    const updatedCart = items.map((item) => 
-      items.find((item) => item.product.id === productId) ? 
-      {
-        ...item,
-        quantity: items.find((item) => item.product.id === productId).quantity + 1
-      } : 
-        item
-    )
-    updateCart(updatedCart)
-  }
+  const updatedCart = items.map((item) =>
+    item.product.id === productId
+      ? { ...item, quantity: item.quantity + 1 }
+      : item
+  );
+
+  updateCart(updatedCart);
+};
 
   const removeQuantity = (productId: number) => {
-    const updateItems = items.map((item) =>
-      items.find((item) => item.product.id === productId) ? {
-        ...item, quantity: items.find((item) => item.product.id === productId).quantity - 1
-      } : item
-    )
-    updateCart(updateItems)
-  };
+  const updatedCart = items.map((item) =>
+    item.product.id === productId
+      ? { ...item, quantity: item.quantity - 1 }
+      : item
+  );
+
+  updateCart(updatedCart);
+};
 
   const removeItemCompletely = (productId: number) => {
     const updatedCart = items.filter(
