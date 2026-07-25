@@ -1,7 +1,6 @@
 import { type Product } from "../types/Products";
 import { type CartItem } from "../types/CartItem";
 
-
 export const Cart = (product: Product) => {
   const storedCart: CartItem[] = JSON.parse(
     localStorage.getItem("cart") || "[]"
@@ -11,20 +10,14 @@ export const Cart = (product: Product) => {
     (item) => item.product.id === product.id
   );
 
-  let updatedCart: CartItem[];
-
   if (existingItem) {
-    existingItem.quantity = existingItem.quantity + 1;
-    updatedCart = storedCart;
+    existingItem.quantity += 1;
   } else {
-    updatedCart = [
-      ...storedCart,
-      {
-        product,
-        quantity: 1,
-      },
-    ];
+    storedCart.push({
+      product,
+      quantity: 1,
+    });
   }
 
-  localStorage.setItem("cart", JSON.stringify(updatedCart));
+  localStorage.setItem("cart", JSON.stringify(storedCart));
 };
