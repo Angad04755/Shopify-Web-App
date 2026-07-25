@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { loginSchema, type LoginType } from "./schema";
+import { LoginSchema, type LoginType } from "../schema/LoginSchema";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
 
@@ -21,20 +21,21 @@ function SignIn({ onRegister }: Props) {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const password = localStorage.getItem("password");
+  const email = localStorage.getItem("email");
 
   const {
     register,
     handleSubmit,
     formState:{errors}
   } = useForm<LoginType>({
-    resolver:zodResolver(loginSchema)
+    resolver:zodResolver(LoginSchema)
   });
 
 
 
-  const handleLogin = async ()=>{
-
+  const handleLogin = (data: LoginType)=>{
+    if (data.email === email && data.password === password) {
       localStorage.setItem(
         "isAuthenticated",
         "authenticated"
@@ -45,6 +46,10 @@ function SignIn({ onRegister }: Props) {
       toast.success("logged in")
 
       navigate("/", { replace: true });
+    }
+    else {
+      toast.error("No account found")
+    }
 
 
   }

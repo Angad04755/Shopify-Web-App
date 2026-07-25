@@ -11,9 +11,10 @@ import { zodResolver }
 
 
 import {
-    registerSchema,
+    RegisterSchema,
     type RegisterType
-} from "./schema";
+} from "../schema/RegisterSchema";
+import { toast } from "sonner";
 
 
 interface Props {
@@ -33,31 +34,20 @@ function Register({ onLogin }: Props) {
         handleSubmit,
         formState: { errors }
     } = useForm<RegisterType>({
-        resolver: zodResolver(registerSchema)
+        resolver: zodResolver(RegisterSchema)
     });
 
 
 
 
 
-    const handleRegister = async () => {
-
-
-        try {
-
-            setLoading(true);
-
-            onLogin();
-
-        }
-        catch (error) {
-            console.log(error);
-        }
-        finally {
-            setLoading(false);
-        }
-
-
+    const handleRegister = (data: RegisterType) => {
+        setLoading(true);
+        localStorage.setItem("email", data.email);
+        localStorage.setItem("password", data.password);
+        toast.success("Account Registered");
+        onLogin();
+        setLoading(false);
     }
 
 
@@ -80,7 +70,9 @@ function Register({ onLogin }: Props) {
 
 
             <form
-                onSubmit={handleSubmit(handleRegister)}
+                onSubmit={handleSubmit((data) => {
+                    handleRegister(data);
+                })}
                 className="space-y-5"
             >
 
@@ -88,7 +80,7 @@ function Register({ onLogin }: Props) {
                 <label className="text-gray-400">Email</label>
                 <input
 
-                    {...register("email")}
+                    {...register("email", { setValueAs: (data) => String(data) })}
 
                     type="email"
 
@@ -97,12 +89,11 @@ function Register({ onLogin }: Props) {
                 />
 
 
-                {
-                    errors.email &&
+                {errors.email && (
                     <p className="text-red-400 text-sm">
                         {errors.email.message}
                     </p>
-                }
+                )}
 
 
 
@@ -110,7 +101,7 @@ function Register({ onLogin }: Props) {
                 <label className="text-gray-400">Password</label>
                 <input
 
-                    {...register("password")}
+                    {...register("password", { setValueAs: (data) => String(data) })}
 
                     type="password"
 
@@ -120,12 +111,28 @@ function Register({ onLogin }: Props) {
 
 
 
-                {
-                    errors.password &&
+                {errors.password && (
                     <p className="text-red-400 text-sm">
                         {errors.password.message}
                     </p>
-                }
+                )}
+
+                <label className="text-gray-400">Confirm Password</label>
+                <input
+
+                    {...register("confirm_password", { setValueAs: (data) => String(data) })}
+
+                    type="password"
+
+                    className="w-full px-4 py-3 border-b-1 border-gray-400 focus-within:ring-2 focus-within:ring-purple-700 outline-none transition"
+
+                />
+
+
+
+                {errors.confirm_password && (
+                    <span className="text-red-400 text-sm">{errors.confirm_password.message}</span>
+                )}
 
 
 

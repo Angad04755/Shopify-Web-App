@@ -128,6 +128,7 @@ authenticated(false)
 );
 
 setProfileOpen(false);
+localStorage.removeItem("isAuthenticated");
 
 toast.success(
 "Logged out"
