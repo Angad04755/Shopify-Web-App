@@ -13,7 +13,7 @@ import { zodResolver }
 import {
     RegisterSchema,
     type RegisterType
-} from "../schema/RegisterSchema";
+} from "../../schema/RegisterSchema";
 import { toast } from "sonner";
 
 

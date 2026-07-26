@@ -1,13 +1,13 @@
 "use client";
 
 import { useDispatch } from "react-redux";
-import { authenticated } from "../../store/features/auth/authSlice";
+import { authenticated } from "../../store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { LoginSchema, type LoginType } from "../schema/LoginSchema";
+import { LoginSchema, type LoginType } from "../../schema/LoginSchema";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
 

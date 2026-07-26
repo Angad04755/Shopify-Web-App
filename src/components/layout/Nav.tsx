@@ -19,7 +19,7 @@ import {
 } from "react-redux";
 
 import { authenticated } 
-from "../../store/features/auth/authSlice";
+from "../../store/slices/authSlice";
 
 import { 
   motion, 
