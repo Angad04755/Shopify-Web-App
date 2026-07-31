@@ -1,6 +1,4 @@
-"use client";
-
-import { type Product } from "../../types/Products";
+import type { Product } from "../../types/Products";
 import { Heart, ShoppingBagIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Cart } from "../../utils/Cart";

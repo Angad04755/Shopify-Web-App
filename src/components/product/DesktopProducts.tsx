@@ -5,7 +5,7 @@ import { getProductsByCategory } from "../../services/GetProductByCategory";
 import ProductCard from "../ui/ProductCard";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
-import { type Product } from "../product/types";
+import type { Product } from "../../types/Products";
 import { GridLoader } from "react-spinners";
 import {
   ChevronLeft,

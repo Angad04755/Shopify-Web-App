@@ -1,4 +1,4 @@
-import { type Product } from "../components/product/types";
+import type { Product } from "../types/Products";
 
 export type CartItem = {
 product: Product;

@@ -49,11 +49,11 @@ import logo from "../../assets/images/logo.png";
 const Nav = () => {
 
 
-const [isOpen,setIsOpen] = useState(false);
+const [isOpen, setIsOpen] = useState(false);
 
-const [profileOpen,setProfileOpen] = useState(false);
+const [profileOpen, setProfileOpen] = useState(false);
 
-const [scrolled,setScrolled] = useState(false);
+const [scrolled, setScrolled] = useState(false);
 
 
 const dispatch = useDispatch<AppDispatch>();
