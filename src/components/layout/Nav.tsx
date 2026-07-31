@@ -1,6 +1,5 @@
 import { 
-  useEffect, 
-  useMemo, 
+  useEffect,
   useState 
 } from "react";
 
@@ -39,8 +38,6 @@ import type {
   RootState 
 } from "../../store/store";
 
-import type { CartItem } 
-from "../../store/types";
 
 import logo from "../../assets/images/logo.png";
 
@@ -64,9 +61,6 @@ const location = useLocation();
 
 
 
-const items = useSelector(
-(state:RootState)=>state.cart.items
-);
 
 
 const isAuthenticated = useSelector(
@@ -75,15 +69,6 @@ const isAuthenticated = useSelector(
 
 
 
-const totalQuantity = useMemo(()=>{
-
-return items.reduce(
-(sum:number,item:CartItem)=>
-sum + item.quantity,
-0
-)
-
-},[items]);
 
 
 
@@ -570,34 +555,6 @@ cursor-pointer
 <ShoppingCart color="gray"/>
 
 
-Cart
-
-
-{
-totalQuantity>0 &&
-
-<span
-
-className="
-ml-auto
-bg-red-500
-text-white
-text-xs
-w-5
-h-5
-rounded-full
-flex
-items-center
-justify-center
-"
-
->
-
-{totalQuantity}
-
-</span>
-
-}
 
 
 

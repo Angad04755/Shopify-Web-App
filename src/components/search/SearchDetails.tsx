@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import ProductCard from "../ui/ProductCard";
 import SearchBox from "./SearchBox";
 import { searchProduct } from "../../services/GetSearchProduct";
-import { type Product } from "../product/types";
+import type { Product } from "../../types/Products";
 
 const SearchDetails = () => {
   const [products, setProducts] = useState<Product[]>([]);

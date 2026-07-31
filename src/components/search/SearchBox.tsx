@@ -1,6 +1,3 @@
-"use client";
-
-
 import {
   useNavigate,
   useSearchParams,
@@ -22,12 +19,7 @@ import {
   searchProduct
 } from "../../services/GetSearchProduct";
 
-
-import {
-  type Product
-} from "../product/types";
-
-
+import type { Product } from "../../types/Products";
 
 
 
