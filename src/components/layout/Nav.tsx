@@ -18,7 +18,7 @@ import {
 } from "react-redux";
 
 import { authenticated } 
-from "../../store/slices/authSlice";
+from "../../redux/slices/authSlice";
 
 import { 
   motion, 
@@ -36,7 +36,7 @@ from "react-toastify";
 import type { 
   AppDispatch, 
   RootState 
-} from "../../store/store";
+} from "../../redux/store";
 
 
 import logo from "../../assets/images/logo.png";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useDispatch } from "react-redux";
-import { authenticated } from "../../store/slices/authSlice";
+import { authenticated } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
