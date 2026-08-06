@@ -12,5 +12,9 @@ export async function getProductsByCategory(
       }
     }
   );
+
+  if (res.status !== 200) {
+    throw new Error("Something wrong")
+  }
   return res.json();
 }

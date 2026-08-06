@@ -129,7 +129,7 @@ const DesktopProducts = () => {
   }
 
   return (
-    <section className="min-h-screen max-w-7xl mx-auto px-6 py-8">
+    <section className="min-h-screen max-w-7xl mx-auto conatainer p-8">
       <div className="float-right">
         <SelectableButton option={options} selected={sortBy} onSelect={setSortBy}/>
       </div>

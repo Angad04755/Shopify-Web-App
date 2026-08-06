@@ -1,6 +1,5 @@
-import axios from "axios";
 export async function getAllProduct() {
-  const res = await axios.get(
+  const res = await fetch(
     `https://dummyjson.com/products?limit=0`
   , {
     method: "GET",
@@ -8,5 +7,5 @@ export async function getAllProduct() {
       "Content-Type": "application/json"
     }
   });
-  return res.data.products;
+  return res.json();
 }

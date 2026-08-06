@@ -1,7 +1,5 @@
-import axios from "axios";
-
 export async function getAllCategory() {
-  const res = await axios.get("https://dummyjson.com/products/categories",
+  const res = await fetch("https://dummyjson.com/products/categories",
     {
       method: "GET",
       headers: {
@@ -9,5 +7,5 @@ export async function getAllCategory() {
     }
   }
   );
-  return res.data;
+  return res.json();
 }
