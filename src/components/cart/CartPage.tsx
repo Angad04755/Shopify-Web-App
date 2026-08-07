@@ -186,7 +186,7 @@ const CartPage = () => {
           ))}
         </div>
 
-        <div className="flex h-full flex-col rounded-3xl bg-white p-6 text-gray-700 shadow-lg">
+        <div className="flex flex-col h-fit rounded-3xl bg-white p-6 text-gray-700 shadow-lg">
           <h2 className="mb-6 text-lg font-semibold">
             Order Summary
           </h2>
