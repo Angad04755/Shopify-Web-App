@@ -7,19 +7,16 @@ import { Cart } from "../../utils/Cart";
 import { ChevronLeft, ChevronRight, Package, Truck } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-import ProductCard from "../ui/ProductCard";
-import { getProductsByCategory } from "../../services/GetProductByCategory";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
+import RelatedProducts from "./RelatedProducts";
 export default function ProductDetails() {
   const { id } = useParams();
 
   const [product, setProduct] = useState<Product>();
   const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     if (!id) return;
@@ -39,21 +36,7 @@ export default function ProductDetails() {
     getProduct();
   }, [id]);
 
-  useEffect(() => {
-    if (!product) {
-      return;
-    }
-
-    const getProducts = async () => {
-      try {
-      const data = await getProductsByCategory(product.category, 5, 0);
-      setRelatedProducts(data.products);
-      } catch (error: any) {
-        toast.error(error.message);
-      }
-    }
-    getProducts();
-  }, [product])
+  
 
   const handleAddItem = useCallback(() => {
     if (!product) return;
@@ -68,6 +51,7 @@ export default function ProductDetails() {
   const handleNext = () => {
     setCurrentIndex((prev) => prev + 1);
   }
+
   // ✅ Loading
   if (isLoading) {
     return (
@@ -231,15 +215,8 @@ export default function ProductDetails() {
 </Swiper>
 
       </article>
-      <article className="mt-5">
-        <h2 className="text-xl text-gray-700 font-semibold">Related Products</h2>
-        <div className="flex flex-col md:flex-row gap-5 mt-5">
-          {relatedProducts.filter((item) => item.id !== product.id).map((item) => (
-    <ProductCard key={item.id} product={item} />
-  ))}
-        </div>
-      </article>
     </section>
+    <RelatedProducts product={product}/>
   </main>
 );
 }
