@@ -3,7 +3,6 @@ import { useEffect, useState, useCallback } from "react";
 import type { Product } from "../../types/Products";
 import { fetchProduct } from "../../services/GetProductById";
 import { toast } from "sonner";
-import { Cart } from "../../utils/Cart";
 import { ChevronLeft, ChevronRight, Package, Truck } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
@@ -11,13 +10,16 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import RelatedProducts from "./RelatedProducts";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../redux/store";
+import { AddToCart } from "../../redux/slices/cartSlice";
 export default function ProductDetails() {
   const { id } = useParams();
 
   const [product, setProduct] = useState<Product>();
   const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     if (!id) return;
 
@@ -40,7 +42,7 @@ export default function ProductDetails() {
 
   const handleAddItem = useCallback(() => {
     if (!product) return;
-    Cart(product);
+    dispatch(AddToCart(product))
     toast.success("added to cart")
   }, [product]);
 

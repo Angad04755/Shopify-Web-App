@@ -1,63 +1,41 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Trash2 } from "lucide-react";
 import cart from "../../assets/images/cart.svg";
-import type { CartItem } from "../../types/CartItem";
-
+import { useSelector, useDispatch } from "react-redux";
+import type { AppDispatch, RootState } from "../../redux/store";
+import { IncreaseQuanity, DecreaseQuantity, ClearCart, DelteFromCart } from "../../redux/slices/cartSlice";
 const CartPage = () => {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const items = useSelector((item: RootState) => item.cart.items);
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
-  }, []);
-
-  useEffect(() => {
-    const storedItems: CartItem[] = JSON.parse(
-      localStorage.getItem("cart") || "[]"
-    );
-
-    setItems(storedItems);
-  }, []);
-
-  const updateCart = (updatedCart: CartItem[]) => {
-    setItems(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-  };
+  }, []);  
 
   const addQuantity = (productId: number) => {
-  const updatedCart = items.map((item) =>
-    item.product.id === productId
-      ? { ...item, quantity: item.quantity + 1 }
-      : item
-  );
-
-  updateCart(updatedCart);
+  dispatch(IncreaseQuanity(productId));
+  localStorage.setItem("cart", JSON.stringify(items));
 };
 
   const removeQuantity = (productId: number) => {
-  const updatedCart = items.map((item) =>
-    item.product.id === productId
-      ? { ...item, quantity: item.quantity - 1 }
-      : item
-  );
+  dispatch(DecreaseQuantity(productId));
 
-  updateCart(updatedCart);
+  localStorage.setItem("cart", JSON.stringify(items));
 };
 
   const removeItemCompletely = (productId: number) => {
-    const updatedCart = items.filter(
-      (item) => item.product.id !== productId
-    );
+    dispatch(DelteFromCart(productId))
 
-    updateCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(items))
   };
 
   const clearCart = () => {
-    setItems([]);
+    dispatch(ClearCart());
     localStorage.removeItem("cart");
   };
 

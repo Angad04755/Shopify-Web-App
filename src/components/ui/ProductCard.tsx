@@ -1,8 +1,11 @@
 import type { Product } from "../../types/Products";
 import { Heart, ShoppingBagIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Cart } from "../../utils/Cart";
 import { toast } from "sonner";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../../redux/store";
+import { AddToCart } from "../../redux/slices/cartSlice";
+
 interface ProductProps {
   product: Product;
 }
@@ -12,14 +15,19 @@ const ProductCard = ({ product }: ProductProps) => {
   const num = Math.round(rate);
   const ratingArray = new Array(num).fill(0);
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const addToCartHandler = () => {
-    Cart(product);
+    dispatch(AddToCart(product));
     toast.success("added to cart")
   };
 
   return (
     <article className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition-shadow flex flex-col h-full w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xs">
+      <div className="flex justify-between space-x-2">
+        
+        <Heart className="cursor-pointer" size={25} />
+      </div>
       {/* Product Image */}
       <div className="flex justify-center items-center h-40 sm:h-48 md:h-56">
         <img
@@ -54,16 +62,10 @@ const ProductCard = ({ product }: ProductProps) => {
       </div>
 
       {/* Buttons */}
-      <div className="mt-4 flex items-center space-x-2">
-        <ShoppingBagIcon
-          className="w-5 h-5 cursor-pointer"
-          onClick={addToCartHandler}
-        />
-        <Heart className="hover:fill-red-600 hover:stroke-red-800 transition-colors duration-800 ease-in-out cursor-pointer" />
-      </div>
+      
 
       {/* Ratings */}
-      <div className="flex items-center mt-2">
+      <div className="flex mt-2">
         {ratingArray.map((_, i) => (
           <span key={i} className="text-yellow-300 text-sm">
             ★
@@ -72,7 +74,15 @@ const ProductCard = ({ product }: ProductProps) => {
         {ratingArray.length === 0 && (
           <span className="text-gray-400 text-sm">No ratings yet</span>
         )}
+        
       </div>
+      <div className="mt-2">
+        <ShoppingBagIcon size={25}
+          className=" cursor-pointer"
+          onClick={addToCartHandler}
+        />
+        </div>
+      
     </article>
   );
 };

@@ -1,23 +1,12 @@
-import { type Product } from "../types/Products";
-import { type CartItem } from "../types/CartItem";
+// import { type Product } from "../types/Products";
+// import { useSelector, useDispatch } from "react-redux";
+// import { AddToCart } from "../redux/slices/cartSlice";
+// import type { RootState, AppDispatch } from "../redux/store";
+// export const Cart = (product: Product) => {
+//   const items = useSelector((state: RootState) => state.cart.items);
+//   const dispatch = useDispatch<AppDispatch>();
 
-export const Cart = (product: Product) => {
-  const storedCart: CartItem[] = JSON.parse(
-    localStorage.getItem("cart") || "[]"
-  );
+//   dispatch(AddToCart(product.id))
 
-  const existingItem = storedCart.find(
-    (item) => item.product.id === product.id
-  );
-
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    storedCart.push({
-      product,
-      quantity: 1,
-    });
-  }
-
-  localStorage.setItem("cart", JSON.stringify(storedCart));
-};
+//   localStorage.setItem("cart", JSON.stringify(items));
+// };
