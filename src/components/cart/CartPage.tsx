@@ -39,10 +39,6 @@ const CartPage = () => {
     localStorage.removeItem("cart");
   };
 
-  const totalQuantity = useMemo(
-    () => items.reduce((total, item) => total + item.quantity, 0),
-    [items]
-  );
 
   const subtotal = useMemo(
     () =>
@@ -111,7 +107,7 @@ const CartPage = () => {
           </span>
 
           <h1 className="text-xl font-semibold text-gray-700">
-            Shopping Cart ({totalQuantity})
+            Shopping Cart
           </h1>
 
           {items.map((item) => (
@@ -140,20 +136,20 @@ const CartPage = () => {
                 <div className="mt-4 flex items-center gap-4">
                   <button
                     onClick={() => addQuantity(item.product.id)}
-                    className="rounded-md border px-3 py-1"
+                    className="rounded-md border px-3 py-1 cursor-pointer hover:bg-gray-800 hover:text-white transition"
                   >
                     + Add
                   </button>
 
                   <button
                     onClick={() => removeQuantity(item.product.id)}
-                    className="rounded-md border px-3 py-1"
+                    className="rounded-md border px-3 py-1 cursor-pointer hover:bg-gray-800 hover:text-white transition"
                   >
                     Remove
                   </button>
 
                   <Trash2
-                    className="cursor-pointer"
+                    className="cursor-pointer hover:fill-red-400"
                     onClick={() =>
                       removeItemCompletely(item.product.id)
                     }
