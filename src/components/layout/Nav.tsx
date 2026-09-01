@@ -1,171 +1,171 @@
-  import {
-    useEffect,
-    useState
-  } from "react";
+import {
+  useEffect,
+  useState
+} from "react";
 
-  import {
-    HeartIcon,
-    ShoppingCart,
-    Menu,
-    X,
-    User,
-    SearchIcon,
-  } from "lucide-react";
+import {
+  HeartIcon,
+  ShoppingCart,
+  Menu,
+  X,
+  User,
+  SearchIcon,
+} from "lucide-react";
 
-  import {
-    useDispatch,
-    useSelector
-  } from "react-redux";
+import {
+  useDispatch,
+  useSelector
+} from "react-redux";
 
-  import { authenticated }
-    from "../../redux/slices/authSlice";
+import { authenticated }
+  from "../../redux/slices/authSlice";
 
-  import {
-    motion,
-    AnimatePresence
-  } from "framer-motion";
+import {
+  motion,
+  AnimatePresence
+} from "framer-motion";
 
-  import {
-    useLocation,
-    useNavigate
-  } from "react-router-dom";
+import {
+  useLocation,
+  useNavigate
+} from "react-router-dom";
 
-  import { toast }
-    from "react-toastify";
+import { toast }
+  from "react-toastify";
 
-  import type {
-    AppDispatch,
-    RootState
-  } from "../../redux/store";
-
-
-  import logo from "../../assets/images/logo.png";
+import type {
+  AppDispatch,
+  RootState
+} from "../../redux/store";
 
 
-
-  const Nav = () => {
-
-
-    const [isOpen, setIsOpen] = useState(false);
-
-    const [profileOpen, setProfileOpen] = useState(false);
-
-    const [scrolled, setScrolled] = useState(false);
-    const CartItems = useSelector((state: RootState) => state.cart.items);
-
-    const dispatch = useDispatch<AppDispatch>();
-
-    const navigate = useNavigate();
-
-    const location = useLocation();
+import logo from "../../assets/images/logo.png";
 
 
 
+const Nav = () => {
 
 
-    const isAuthenticated = useSelector(
-      (state: RootState) => state.auth.isAuthenticated
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  const [scrolled, setScrolled] = useState(false);
+  const CartItems = useSelector((state: RootState) => state.cart.items);
+  const WishlistItems = useSelector((state: RootState) => state.wishlist.items);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+
+
+
+
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+
+
+
+
+
+
+
+  useEffect(() => {
+
+
+    const handleScroll = () => {
+
+      setScrolled(window.scrollY > 20)
+
+    }
+
+
+    window.addEventListener(
+      "scroll",
+      handleScroll
     );
 
 
+    return () => {
 
-
-
-
-
-    useEffect(() => {
-
-
-      const handleScroll = () => {
-
-        setScrolled(window.scrollY > 20)
-
-      }
-
-
-      window.addEventListener(
+      window.removeEventListener(
         "scroll",
         handleScroll
-      );
+      )
+
+    }
 
 
-      return () => {
-
-        window.removeEventListener(
-          "scroll",
-          handleScroll
-        )
-
-      }
-
-
-    }, []);
+  }, []);
 
 
 
 
 
 
-    const logout = () => {
+  const logout = () => {
 
-      dispatch(
-        authenticated(false)
-      );
+    dispatch(
+      authenticated(false)
+    );
 
-      setProfileOpen(false);
-      localStorage.removeItem("isAuthenticated");
+    setProfileOpen(false);
+    localStorage.removeItem("isAuthenticated");
 
-      toast.success(
-        "Logged out"
-      );
+    toast.success(
+      "Logged out"
+    );
 
-    };
-
-
+  };
 
 
-    return (
-
-      <>
 
 
-        <motion.header
+  return (
 
-          initial={{ y: -80 }}
+    <>
 
-          animate={{ y: 0 }}
 
-          transition={{
-            duration: 0.4
-          }}
+      <motion.header
 
-          className={`
+        initial={{ y: -80 }}
+
+        animate={{ y: 0 }}
+
+        transition={{
+          duration: 0.4
+        }}
+
+        className={`
   ${location.pathname.includes("/sign")
-              ? "hidden"
-              : "block"
-            }
+            ? "hidden"
+            : "block"
+          }
 
   sticky top-0 z-[200]
 
   w-full
 
   ${scrolled
-              ?
-              "shadow-md"
-              : ""
+            ?
+            "shadow-md"
+            : ""
 
-            }
+          }
 
   bg-indigo-100
 
   `}
 
-        >
+      >
 
 
-          <nav
+        <nav
 
-            className="
+          className="
   container
   mx-auto
   h-[70px]
@@ -177,129 +177,130 @@
 
   "
 
-          >
+        >
 
 
 
-            {/* LEFT SECTION */}
+          {/* LEFT SECTION */}
 
 
-            <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3">
 
 
-              <button
+            <button
 
-                className="
+              className="
   md:hidden
   "
 
-                onClick={() => setIsOpen(true)}
+              onClick={() => setIsOpen(true)}
 
-              >
+            >
 
-                <Menu size={28} color="gray" />
-
-
-              </button>
+              <Menu size={28} color="gray" />
 
 
+            </button>
 
-              <div
 
-                onClick={() => navigate("/")}
 
-                className="
+            <div
+
+              onClick={() => navigate("/")}
+
+              className="
   flex
   items-center
   gap-2
   cursor-pointer
   "
 
-              >
+            >
 
 
-                <img
+              <img
 
-                  src={logo}
+                src={logo}
 
-                  alt="logo"
+                alt="logo"
 
-                  className="w-10 h-10"
+                className="w-10 h-10"
 
-                />
+              />
 
 
-                <span
+              <span
 
-                  className="
+                className="
   font-semibold
   text-gray-700
   text-2xl
   "
 
-                >
+              >
 
-                  Shopify
+                Shopify
 
-                </span>
-
-
-              </div>
+              </span>
 
 
             </div>
 
 
+          </div>
 
 
 
-            {/* DESKTOP ICONS */}
 
-            <div
 
-              className="
+          {/* DESKTOP ICONS */}
+
+          <div
+
+            className="
   hidden
   md:flex
   items-center
   gap-6
   "
 
-            >
+          >
 
 
-              <button className={`${location.pathname === "/search" ? "bg-white" : ""} hover:bg-white px-2 py-2 rounded-full transition`}><SearchIcon
+            <button className={`${location.pathname === "/search" ? "bg-white" : ""} hover:bg-white px-2 py-2 rounded-full transition`}><SearchIcon
 
-                size={24} color="gray"
+              size={24} color="gray"
 
-                className={`cursor-pointer ${location.pathname === "/search" ? "fill-black" : ""}`}
+              className={`cursor-pointer ${location.pathname === "/search" ? "fill-black" : ""}`}
 
-                onClick={() => navigate("/search")}
+              onClick={() => navigate("/search")}
 
-              /></button>
-
-
-              <button><HeartIcon color="gray"
-
-                className="cursor-pointer"
-
-              /></button>
+            /></button>
 
 
-              <CartIcon
-              /> <span className={`w-6 h-6 rounded-full bg-red-400 text-center text-white fixed right-45 top-2 ${CartItems.length === 0 ? "hidden" : "block"}`}>{CartItems.length}</span>
+            <button className={`${location.pathname === "/wishlist" ? "bg-white" : ""} hover:bg-white px-2 py-2 rounded-full transition`}><HeartIcon color="gray"
+
+              className={`${location.pathname === "/wishlist" ? "fill-black" : ""} cursor-pointer`} onClick={() => navigate("wishlist")}
+
+            /><span className={`${WishlistItems.length === 0 ? "hidden" : "block"} fixed top-2 right-61  bg-red-400 w-6 h-6 rounded-full text-white text-center`}>{WishlistItems.length}</span>
+</button>
 
 
-
-              <button className=""><UserSection
-                isAuthenticated={isAuthenticated}
-                profileOpen={profileOpen}
-                setProfileOpen={setProfileOpen}
-                logout={logout}
-              /></button>
+            <CartIcon
+            /> <span className={`w-6 h-6 rounded-full bg-red-400 text-center text-white fixed right-45 top-2 ${CartItems.length === 0 ? "hidden" : "block"}`}>{CartItems.length}</span>
 
 
 
-            </div>
+            <button className=""><UserSection
+              isAuthenticated={isAuthenticated}
+              profileOpen={profileOpen}
+              setProfileOpen={setProfileOpen}
+              logout={logout}
+            /></button>
+
+
+
+          </div>
 
 
 
@@ -307,124 +308,124 @@
 
 
 
-            {/* MOBILE ICONS */}
+          {/* MOBILE ICONS */}
 
 
-            <div
+          <div
 
-              className="
+            className="
   flex
   md:hidden
   items-center
   gap-4
   "
 
-            >
+          >
 
 
-              <button className={`${location.pathname === "/search" ? "bg-white" : ""} hover:bg-white px-2 py-2 rounded-full transition`}><SearchIcon
+            <button className={`${location.pathname === "/search" ? "bg-white" : ""} hover:bg-white px-2 py-2 rounded-full transition`}><SearchIcon
 
-                size={24} color="gray"
+              size={24} color="gray"
 
-                className={`cursor-pointer ${location.pathname === "/search" ? "fill-black" : ""}`}
+              className={`cursor-pointer ${location.pathname === "/search" ? "fill-black" : ""}`}
 
-                onClick={() => navigate("/search")}
+              onClick={() => navigate("/search")}
 
-              /></button>
+            /></button>
 
 
 
-              {/* <CartIcon
+            {/* <CartIcon
   /> */}
 
 
 
-              <UserSection
+            <UserSection
 
-                isAuthenticated={isAuthenticated}
+              isAuthenticated={isAuthenticated}
 
-                profileOpen={profileOpen}
+              profileOpen={profileOpen}
 
-                setProfileOpen={setProfileOpen}
+              setProfileOpen={setProfileOpen}
 
-                logout={logout}
+              logout={logout}
 
-              />
-
-
-
-            </div>
+            />
 
 
 
-
-          </nav>
-
-
-        </motion.header>
+          </div>
 
 
+
+
+        </nav>
+
+
+      </motion.header>
 
 
 
 
 
-        {/* MOBILE SIDEBAR */}
 
 
-        <AnimatePresence>
+      {/* MOBILE SIDEBAR */}
 
 
-          {
-            isOpen &&
+      <AnimatePresence>
 
-            <aside
 
-              className="
+        {
+          isOpen &&
+
+          <aside
+
+            className="
   fixed
   inset-0
   z-[9999]
   "
 
-            >
+          >
 
 
-              <div
+            <div
 
-                className="
+              className="
   absolute
   inset-0
   bg-black/40
   "
 
-                onClick={() => setIsOpen(false)}
+              onClick={() => setIsOpen(false)}
 
-              />
-
-
-
-              <motion.div
+            />
 
 
-                initial={{
-                  x: -350
-                }}
 
-                animate={{
-                  x: 0
-                }}
-
-                exit={{
-                  x: -350
-                }}
+            <motion.div
 
 
-                transition={{
-                  duration: .3
-                }}
+              initial={{
+                x: -350
+              }}
+
+              animate={{
+                x: 0
+              }}
+
+              exit={{
+                x: -350
+              }}
 
 
-                className="
+              transition={{
+                duration: .3
+              }}
+
+
+              className="
   absolute
   left-0
   top-0
@@ -439,170 +440,173 @@
 
   "
 
-              >
+            >
 
 
-                <div className="p-6">
+              <div className="p-6">
 
 
-                  <div
+                <div
 
-                    className="
+                  className="
   flex
   justify-between
   items-center
   "
 
-                  >
+                >
 
 
-                    <h2
+                  <h2
 
-                      className="
+                    className="
   text-gray-700
   font-semibold
   text-xl
   "
 
-                    >
+                  >
 
-                      Menu
+                    Menu
 
-                    </h2>
+                  </h2>
 
 
 
-                    <button
+                  <button
 
-                      onClick={() => setIsOpen(false)}
+                    onClick={() => setIsOpen(false)}
 
-                    >
+                  >
 
-                      <X size={25} color="gray" />
+                    <X size={25} color="gray" />
 
-                    </button>
+                  </button>
 
+
+                </div>
+
+
+
+
+                <div
+
+                  className="
+  mt-8
+  space-y-4
+  "
+
+                >
+
+
+                  <div
+
+                    className="
+  flex
+  items-center
+  gap-3
+  p-4
+  rounded-xl
+  border-1 border-gray-700
+  hover:bg-gray-50
+  text-gray-600 font-semibold
+  cursor-pointer
+  " onClick={() => {
+                      navigate("/wishlist")
+                      setIsOpen(false)
+                    }}
+
+                  >
+
+                    <HeartIcon color="gray" /><span className={`${WishlistItems.length === 0 ? "hidden" : "block"} fixed top-22 left-14 bg-red-400 w-6 h-6 rounded-full text-white text-center`}>{WishlistItems.length}</span>
+
+                    Favorites
 
                   </div>
+
 
 
 
 
                   <div
 
+                    onClick={() => {
+
+                      navigate("/cart");
+
+                      setIsOpen(false);
+
+                    }}
+
                     className="
-  mt-8
-  space-y-4
+  flex
+  items-center
+  gap-3
+  p-4
+  rounded-xl
+  border-1 border-gray-700
+  hover:bg-gray-50
+  text-gray-600 font-semibold
+  cursor-pointer
   "
 
                   >
 
 
-                    <div
-
-                      className="
-  flex
-  items-center
-  gap-3
-  p-4
-  rounded-xl
-  border-1 border-gray-700
-  hover:bg-gray-50
-  text-gray-600 font-semibold
-  cursor-pointer
-  "
-
-                    >
-
-                      <HeartIcon color="gray" />
-
-                      Favorites
-
-                    </div>
+                    <ShoppingCart color="gray" />Cart <span className={`${CartItems.length === 0 ? "hidden" : "block"} fixed top-40 left-14 w-6 h-6 rounded-full bg-red-400 text-center text-white`}>{CartItems.length}</span>
 
 
-
-
-
-                    <div
-
-                      onClick={() => {
-
-                        navigate("/cart");
-
-                        setIsOpen(false);
-
-                      }}
-
-                      className="
-  flex
-  items-center
-  gap-3
-  p-4
-  rounded-xl
-  border-1 border-gray-700
-  hover:bg-gray-50
-  text-gray-600 font-semibold
-  cursor-pointer
-  "
-
-                    >
-
-
-                      <ShoppingCart color="gray" />Cart <span className="fixed top-40 left-15 w-6 h-6 rounded-full bg-red-400 text-center text-white">{CartItems.length}</span>
-
-
-
-
-
-                    </div>
 
 
 
                   </div>
 
 
+
                 </div>
 
 
-              </motion.div>
+              </div>
+
+
+            </motion.div>
 
 
 
-            </aside>
+          </aside>
 
-          }
-
-
-
-        </AnimatePresence>
-
-
-      </>
-
-    )
-
-  };
+        }
 
 
 
+      </AnimatePresence>
 
 
+    </>
 
+  )
 
-  function CartIcon() {
-
-
-    const navigate = useNavigate();
-
-
-    return (
+};
 
 
 
 
-      <button
-        className={`
+
+
+
+function CartIcon() {
+
+
+  const navigate = useNavigate();
+
+
+  return (
+
+
+
+
+    <button
+      className={`
       relative
       cursor-pointer
       transition
@@ -611,19 +615,17 @@
       hover:bg-white
       ${location.pathname === "/cart" ? "bg-white" : ""}
     `}
-        onClick={() => navigate("/cart")}
-      >
-        <ShoppingCart
-          size={24} color="gray"
-          className={location.pathname === "/cart" ? "fill-black" : ""}
-        />
-      </button>
+      onClick={() => navigate("/cart")}
+    >
+      <ShoppingCart
+        size={24} color="gray"
+        className={location.pathname === "/cart" ? "fill-black" : ""}
+      />
+    </button>
 
-    )
+  )
 
-  }
-
-
+}
 
 
 
@@ -631,33 +633,35 @@
 
 
 
-  function UserSection({
-
-    isAuthenticated,
-
-    profileOpen,
-
-    setProfileOpen,
-
-    logout
 
 
-  }: any) {
+function UserSection({
+
+  isAuthenticated,
+
+  profileOpen,
+
+  setProfileOpen,
+
+  logout
 
 
-    const navigate = useNavigate();
+}: any) {
+
+
+  const navigate = useNavigate();
 
 
 
-    if (!isAuthenticated)
+  if (!isAuthenticated)
 
-      return (
+    return (
 
-        <button
+      <button
 
-          onClick={() => navigate("/sign-in")}
+        onClick={() => navigate("/sign-in")}
 
-          className="
+        className="
                     border-2
                     border-gray-400
                     px-3
@@ -673,24 +677,24 @@
                     cursor-pointer
                     "
 
-        >
+      >
 
-          Login
+        Login
 
-        </button>
+      </button>
 
-      )
-
-
+    )
 
 
-    return (
 
-      <div className="relative">
 
-        <button
-          onClick={() => setProfileOpen(!profileOpen)}
-          className={`
+  return (
+
+    <div className="relative">
+
+      <button
+        onClick={() => setProfileOpen(!profileOpen)}
+        className={`
       w-10
       h-10
       rounded-full
@@ -703,44 +707,44 @@
       hover:bg-indigo-300
       ${profileOpen ? "bg-indigo-300" : ""}
     `}
-        >
-          <User
-            size={20} color="gray"
-            className={profileOpen ? "fill-black" : ""}
-          />
-        </button>
+      >
+        <User
+          size={20} color="gray"
+          className={profileOpen ? "fill-black" : ""}
+        />
+      </button>
 
 
 
 
 
-        <AnimatePresence>
+      <AnimatePresence>
 
-          {
+        {
 
-            profileOpen &&
+          profileOpen &&
 
-            <motion.div
+          <motion.div
 
-              initial={{
-                opacity: 0,
-                scale: .9,
-                y: -10
-              }}
+            initial={{
+              opacity: 0,
+              scale: .9,
+              y: -10
+            }}
 
-              animate={{
-                opacity: 1,
-                scale: 1,
-                y: 0
-              }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              y: 0
+            }}
 
-              exit={{
-                opacity: 0,
-                scale: .9,
-                y: -10
-              }}
+            exit={{
+              opacity: 0,
+              scale: .9,
+              y: -10
+            }}
 
-              className="
+            className="
   absolute
   right-0
   mt-3
@@ -761,42 +765,42 @@
 
   "
 
-            >
+          >
 
 
-              <div
+            <div
 
-                className="
+              className="
   px-4
   py-3
   border-b
   "
 
-              >
+            >
 
-                <p className="font-semibold">
+              <p className="font-semibold">
 
-                  My Account
+                My Account
 
-                </p>
-
-
-                <p className="text-xs text-gray-700">
-
-                  Welcome back
-
-                </p>
+              </p>
 
 
-              </div>
+              <p className="text-xs text-gray-700">
+
+                Welcome back
+
+              </p>
+
+
+            </div>
 
 
 
-              <button
+            <button
 
-                onClick={logout}
+              onClick={logout}
 
-                className="
+              className="
   w-full
   text-left
 
@@ -809,29 +813,29 @@
   cursor-pointer
   "
 
-              >
+            >
 
-                Logout
+              Logout
 
-              </button>
-
-
-            </motion.div>
+            </button>
 
 
-          }
+          </motion.div>
 
 
-        </AnimatePresence>
+        }
 
 
-      </div>
+      </AnimatePresence>
 
 
-    )
+    </div>
 
 
-  }
+  )
 
 
-  export default Nav;
+}
+
+
+export default Nav;

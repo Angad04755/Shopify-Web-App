@@ -101,7 +101,7 @@ const CartPage = () => {
       animate={{ opacity: 1 }}
       className="min-h-screen bg-gray-50 py-10"
     >
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 lg:grid-cols-3">
+      <section className="mx-auto container grid max-w-6xl grid-cols-1 gap-8 px-4 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           <span
             className="float-right cursor-pointer text-gray-700 hover:text-gray-800 active:text-gray-900"
@@ -192,7 +192,7 @@ const CartPage = () => {
             </button>
           </div>
         </div>
-      </div>
+      </section>
     </motion.div>
   );
 };

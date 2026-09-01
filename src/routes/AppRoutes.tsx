@@ -6,7 +6,7 @@ const ProductDetailsPage = lazy(() => import("../pages/ProductdetailsPage"));
 const CartPage = lazy(() => import("../pages/CartPage"));
 const SearchPage = lazy(() => import("../pages/SearchPage"));
 const AuthLayout = lazy(() => import("../components/auth/AuthLayout"));
-
+const WishlistPage = lazy(() => import("../components/wishlist/WishlistPage"));
 function AppRoutes() {
     return (
         <Suspense>
@@ -17,6 +17,7 @@ function AppRoutes() {
             <Route path="/sign-in" element={<AuthLayout/>}/>
             <Route path="/category/:slug" element={<CategoryPage/>}/>
             <Route path="/product/product-details/:id" element={<ProductDetailsPage/>}/>
+            <Route path="/wishlist" element={<WishlistPage/>}/>
         </Routes>
         </Suspense>
     )

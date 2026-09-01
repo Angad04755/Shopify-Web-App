@@ -5,28 +5,56 @@ import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../redux/store";
 import { AddToCart } from "../../redux/slices/cartSlice";
+import { useEffect, useState } from "react";
+import { AddtoWishlist, DeleteFromWishlist } from "../../redux/slices/WishlistSlice";
+
 
 interface ProductProps {
   product: Product;
 }
 
 const ProductCard = ({ product }: ProductProps) => {
+  const Items: Product[] = JSON.parse(localStorage.getItem("wishlist") || "[]");
   const rate = product.rating ?? 0;
   const num = Math.round(rate);
   const ratingArray = new Array(num).fill(0);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const [liked, setLiked] = useState<boolean>(false);
 
   const addToCartHandler = () => {
     dispatch(AddToCart(product));
     toast.success("added to cart")
   };
 
+  useEffect(() => {
+    const desiredItem = Items.find((item) => item.id === product.id)
+    if (desiredItem) {
+        setLiked(true);
+    }
+  }, []);
+
+  const addToWishlistHandler = () => {
+    if (liked) {
+        dispatch(DeleteFromWishlist(product.id));
+        const updateditems = Items.filter((item) => item.id !== product.id);
+        localStorage.setItem("wishlist", JSON.stringify(updateditems));
+        setLiked(false)
+        toast.success("Item removed from wishlist")
+    } else {
+    dispatch(AddtoWishlist(product));
+    const updatedCoins = [...Items, product];
+    localStorage.setItem("wishlist", JSON.stringify(updatedCoins));
+    setLiked(true);
+    toast.success("Item wishlisted")
+    }
+  }
+
   return (
-    <article className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition-shadow flex flex-col h-full w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xs">
+    <div className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition-shadow flex flex-col h-full w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xs">
       <div className="flex justify-between space-x-2">
         
-        <Heart className="cursor-pointer" size={25} />
+        <Heart className={`${liked ? "fill-red-500" : ""} cursor-pointer`} size={25} onClick={addToWishlistHandler} />
       </div>
       {/* Product Image */}
       <div className="flex justify-center items-center h-40 sm:h-48 md:h-56">
@@ -83,7 +111,7 @@ const ProductCard = ({ product }: ProductProps) => {
         />
         </div>
       
-    </article>
+    </div>
   );
 };
 

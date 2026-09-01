@@ -162,14 +162,20 @@ export default function ProductDetails() {
             <p className="font-semibold text-gray-600">{product.sku}</p>
           </div>
         </div>
-
+            <div className="flex flex-row gap-10">
         <button
           className="mt-4 w-fit rounded-lg bg-green-500 px-8 py-3 text-white font-semibold hover:bg-green-600 active:bg-green-700 transition cursor-pointer"
           onClick={handleAddItem}
         >
           Add To Cart
         </button>
-            
+        {/* <button
+          className="mt-4 w-fit rounded-lg bg-green-500 px-8 py-3 text-white font-semibold hover:bg-green-600 active:bg-green-700 transition cursor-pointer"
+          onClick={handleAddItem}
+        >
+          <Heart size={25}/>
+        </button> */}
+            </div>
         <div>
         <h2 className="w-fit rounded-sm text-xl text-gray-700 font-semibold flex flex-row gap-2">Product Details <Package size={25} className="my-auto"/></h2>
         <ul className="mt-2 text-gray-600">
