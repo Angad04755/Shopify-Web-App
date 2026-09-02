@@ -12,7 +12,7 @@ interface WishlistProps {
 }
 function WishlistCard({ wishListItem }: WishlistProps) {
     const Items: Product[] = JSON.parse(localStorage.getItem("wishlist") || "[]");
-    const [liked, setLiked] = useState<boolean>();
+    const [liked, setLiked] = useState(false)
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 

@@ -20,7 +20,7 @@ const ProductCard = ({ product }: ProductProps) => {
   const ratingArray = new Array(num).fill(0);
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const [liked, setLiked] = useState<boolean>(false);
+  const [liked, setLiked] = useState(false)
 
   const addToCartHandler = () => {
     dispatch(AddToCart(product));

@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import type { Product } from "../../types/Products";
 import { fetchProduct } from "../../services/GetProductById";
 import { toast } from "sonner";
-import { ChevronLeft, ChevronRight, Package, Truck } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, Package, Truck } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -13,13 +13,29 @@ import RelatedProducts from "./RelatedProducts";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../redux/store";
 import { AddToCart } from "../../redux/slices/cartSlice";
+import { AddtoWishlist, DeleteFromWishlist } from "../../redux/slices/WishlistSlice";
+
 export default function ProductDetails() {
   const { id } = useParams();
-
+  const items: Product[] = JSON.parse(localStorage.getItem("wishlist") || "[]");
   const [product, setProduct] = useState<Product>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [liked, setLiked] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+
+    const desiredItem = items.find((item) => item.id === Number(id));
+
+    if (desiredItem) {
+      setLiked(true);
+    }
+  }, [id]);
+
   useEffect(() => {
     if (!id) return;
 
@@ -53,6 +69,23 @@ export default function ProductDetails() {
   const handleNext = () => {
     setCurrentIndex((prev) => prev + 1);
   }
+
+  const addToWishlistHandler = () => {
+      if (liked) {
+          dispatch(DeleteFromWishlist(id));
+          const updateditems = items.filter((item) => item.id !== Number(id));
+          localStorage.setItem("wishlist", JSON.stringify(updateditems));
+          setLiked(false)
+          toast.success("Item removed from wishlist")
+      } else {
+      dispatch(AddtoWishlist(product));
+      const updatedCoins = [...items, product];
+      localStorage.setItem("wishlist", JSON.stringify(updatedCoins));
+      setLiked(true);
+      toast.success("Item wishlisted")
+      }
+    }
+  
 
   // ✅ Loading
   if (isLoading) {
@@ -169,12 +202,12 @@ export default function ProductDetails() {
         >
           Add To Cart
         </button>
-        {/* <button
-          className="mt-4 w-fit rounded-lg bg-green-500 px-8 py-3 text-white font-semibold hover:bg-green-600 active:bg-green-700 transition cursor-pointer"
-          onClick={handleAddItem}
+        <button
+          className={`${liked ? "bg-gray-700 hover:bg-gray-800 active:bg-gray-900" : "bg-green-500 hover:bg-green-600 active:bg-green-700"} mt-4 w-fit rounded-lg px-8 py-3 text-white font-semibold   transition cursor-pointer`}
+          onClick={addToWishlistHandler}
         >
-          <Heart size={25}/>
-        </button> */}
+          <Heart size={25} className={`${liked ? "fill-red-400" : ""}`}/>
+        </button>
             </div>
         <div>
         <h2 className="w-fit rounded-sm text-xl text-gray-700 font-semibold flex flex-row gap-2">Product Details <Package size={25} className="my-auto"/></h2>
