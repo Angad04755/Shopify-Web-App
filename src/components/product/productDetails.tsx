@@ -195,7 +195,7 @@ export default function ProductDetails() {
             <p className="font-semibold text-gray-600">{product.sku}</p>
           </div>
         </div>
-            <div className="flex flex-row gap-10">
+            <div className="flex flex-row gap-5">
         <button
           className="mt-4 w-fit rounded-lg bg-green-500 px-8 py-3 text-white font-semibold hover:bg-green-600 active:bg-green-700 transition cursor-pointer"
           onClick={handleAddItem}
