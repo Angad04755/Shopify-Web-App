@@ -18,7 +18,7 @@ function WishlistPage() {
                 <section className="mx-auto container p-5 flex flex-col place-content-center">
                     <h1 className="text-center text-xl font-semibold">No wishlisted Items</h1>
                 <img src={image} className="object-cover mx-auto mt-10"/>
-                <button className="bg-green-400 px-5 py-3 text-xl rounded-lg text-gray-700 font-semibold mt-10 cursor-pointer hover:bg-green-500 active:bg-green-600 w-fit" onClick={()=> navigate("/")}>Explore Items</button>
+                <button className="mx-auto bg-green-400 px-5 py-3 text-xl rounded-lg text-gray-700 font-semibold mt-10 cursor-pointer hover:bg-green-500 active:bg-green-600 w-fit" onClick={()=> navigate("/")}>Explore Items</button>
                 </section>
 
             </main>
