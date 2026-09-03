@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../redux/store";
 import { AddToCart } from "../../redux/slices/cartSlice";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AddtoWishlist, DeleteFromWishlist } from "../../redux/slices/WishlistSlice";
 
 
@@ -22,10 +22,10 @@ const ProductCard = ({ product }: ProductProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [liked, setLiked] = useState(false)
 
-  const addToCartHandler = () => {
+  const addToCartHandler = useCallback(() => {
     dispatch(AddToCart(product));
     toast.success("added to cart")
-  };
+  }, [product]);
 
   useEffect(() => {
     const desiredItem = Items.find((item) => item.id === product.id)
@@ -34,7 +34,7 @@ const ProductCard = ({ product }: ProductProps) => {
     }
   }, []);
 
-  const addToWishlistHandler = () => {
+  const addToWishlistHandler = useCallback(() => {
     if (liked) {
         dispatch(DeleteFromWishlist(product.id));
         const updateditems = Items.filter((item) => item.id !== product.id);
@@ -48,7 +48,7 @@ const ProductCard = ({ product }: ProductProps) => {
     setLiked(true);
     toast.success("Item wishlisted")
     }
-  }
+  }, [product]);
 
   return (
     <div className="bg-white rounded-xl shadow-md p-4 hover:shadow-lg transition-shadow flex flex-col h-full w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xs">

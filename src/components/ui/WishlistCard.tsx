@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { DeleteFromWishlist } from "../../redux/slices/WishlistSlice";
 import { Heart } from "lucide-react";
 import type { AppDispatch } from "../../redux/store";
@@ -16,10 +16,11 @@ function WishlistCard({ wishListItem }: WishlistProps) {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
-    const addToCartHandler = () => {
+
+  const addToCartHandler = useCallback(() => {
     dispatch(AddToCart(wishListItem));
-    toast.success("added to cart")
-  };
+    toast.success("added to cart");
+  }, [wishListItem])
 
   useEffect(() => {
     const desiredItem = Items.find((item) => item.id === wishListItem.id)
