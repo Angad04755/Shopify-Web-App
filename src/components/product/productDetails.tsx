@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../../redux/store";
 import { AddToCart } from "../../redux/slices/cartSlice";
 import { AddtoWishlist, DeleteFromWishlist } from "../../redux/slices/WishlistSlice";
-
+import ProductDetailsSkeleton from "../../skeletons/ProductDetailsSkeleton";
 export default function ProductDetails() {
   const { id } = useParams();
   const items: Product[] = JSON.parse(localStorage.getItem("wishlist") || "[]");
@@ -90,9 +90,7 @@ export default function ProductDetails() {
   // ✅ Loading
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-700 animate-pulse">
-        Loading product...
-      </div>
+      <ProductDetailsSkeleton/>
     );
   }
 
