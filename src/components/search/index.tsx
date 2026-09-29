@@ -9,7 +9,7 @@ import SearchBox from "./SearchBox";
 import { searchProduct } from "../../services/GetSearchProduct";
 import type { Product } from "../../types/Products";
 
-const SearchDetails = () => {
+const Search = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -90,7 +90,7 @@ const SearchDetails = () => {
         )}
 
         {!loading && searchQuery && products.length === 0 && (
-          <div className="flex justify-center py-20">
+          <div className="flex place-content-center py-20">
             <p className="text-gray-500">
               No products found.
             </p>
@@ -164,4 +164,4 @@ const SearchDetails = () => {
   );
 };
 
-export default SearchDetails;
+export default Search;

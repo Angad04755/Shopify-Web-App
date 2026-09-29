@@ -120,7 +120,7 @@ const DesktopProducts = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen flex justify-center items-center mt-10">
+      <div className="flex justify-center items-center mt-10">
         <span>
           Cannot load Products
         </span>

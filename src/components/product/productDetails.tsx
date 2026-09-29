@@ -24,6 +24,8 @@ export default function ProductDetails() {
   const [liked, setLiked] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
+  
+
   useEffect(() => {
     if (!id) {
       return;
@@ -34,6 +36,7 @@ export default function ProductDetails() {
     if (desiredItem) {
       setLiked(true);
     }
+    window.scrollTo({ top: 0, behavior: "instant"})
   }, [id]);
 
   useEffect(() => {
