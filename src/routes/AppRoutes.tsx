@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import AppLayout from "./AppLayout";
+import AppLayout from "../components/layout/AppLayout";
 const HomePage = lazy(() => import("../pages/HomePage"));
 const CategoryPage = lazy(() => import("../pages/CategoryPage"));
 const ProductDetailsPage = lazy(
