@@ -1,8 +1,8 @@
-import Search from "../components/Search/index";
+import SearchComponent from "../components/SearchComponent";
 function SearchPage() {
 return (
     <main className="min-h-screen">
-        <Search/>
+        <SearchComponent/>
     </main>
 )
 }

@@ -23,7 +23,7 @@ import type { Product } from "../../types/Products";
 
 
 
-const SearchBox = () => {
+const SearchInput = () => {
 
 
   const [query,setQuery] = useState("");
@@ -377,4 +377,4 @@ text-sm
 
 
 
-export default SearchBox;
+export default SearchInput;

@@ -5,11 +5,11 @@ import { useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import ProductCard from "../ui/ProductCard";
-import SearchBox from "./SearchBox";
+import SearchInput from "./SearchInput";
 import { searchProduct } from "../../services/GetSearchProduct";
 import type { Product } from "../../types/Products";
 
-const Search = () => {
+const SearchComponent = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -55,7 +55,7 @@ const Search = () => {
       transition={{ duration: 0.25 }}
       className="min-h-screen bg-white"
     >
-      <SearchBox />
+      <SearchInput/>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {searchQuery && (
@@ -164,4 +164,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchComponent;
