@@ -6,7 +6,7 @@ export const getAllProduct = async () => {
             limit: 0,
         },
     });
-    return  response.data
+    return  response
 }
 
 export async function getPrductById(id: string) {
@@ -14,14 +14,14 @@ export async function getPrductById(id: string) {
     Routes.get_Product_By_Id.route(id)
   );
 
-  return response.data;
+  return response;
 }
 
 
 export async function getAllCategory() {
   const response = await Api.get(Routes.get_Categories.route);
 
-  return response.data;
+  return response;
 }
 
 export const getProductsByCategory = async (category: string, limit: number, skip: number) => {
@@ -31,7 +31,7 @@ export const getProductsByCategory = async (category: string, limit: number, ski
             skip: skip,
         },
     })
-    return response.data;
+    return response;
 }
 
 export async function searchProduct(query: string) {
@@ -44,5 +44,5 @@ export async function searchProduct(query: string) {
     }
   );
 
-  return response.data;
+  return response;
 }
