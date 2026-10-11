@@ -1,10 +1,11 @@
+
 import axios from "axios";
 
-const Api = axios.create({
+const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
-Api.interceptors.request.use(
+api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
 
@@ -14,15 +15,11 @@ Api.interceptors.request.use(
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-Api.interceptors.response.use(
-  (response) => {
-    return response.data;
-  },
+api.interceptors.response.use(
+  (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
@@ -32,4 +29,4 @@ Api.interceptors.response.use(
   }
 );
 
-export default Api;
+export default api;

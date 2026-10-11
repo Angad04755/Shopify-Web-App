@@ -1,40 +1,56 @@
-import Api from "./Api";
-import Routes from "./Routes";
-export const getAllProduct = async () => {
-    const response = await Api.get(Routes.get_Products.route, {
-        params: {
-            limit: 0,
-        },
-    });
-    return  response
-}
 
-export async function getPrductById(id: string) {
+import Api from "./api";
+import Routes from "./routes";
+
+
+
+export const getAllProduct = async () => {
+  const response = await Api.get(
+    Routes.get_Products.route,
+    {
+      params: {
+        limit: 0,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const getProductById = async (id: string) => {
   const response = await Api.get(
     Routes.get_Product_By_Id.route(id)
   );
+  return response.data;
+};
 
-  return response;
-}
+export const getAllCategory = async () => {
+  const response = await Api.get(
+    Routes.get_Categories.route
+  );
 
+  return response.data;
+};
 
-export async function getAllCategory() {
-  const response = await Api.get(Routes.get_Categories.route);
+export const getProductsByCategory = async (
+  category: string,
+  limit: number,
+  skip: number
+) => {
+  const response = await Api.get(
+    Routes.get_Products_By_Category.route(category),
+    {
+      params: {
+        limit,
+        skip,
+      },
+    }
+  );
 
-  return response;
-}
+  return response.data;
+};
 
-export const getProductsByCategory = async (category: string, limit: number, skip: number) => {
-    const response = await Api.get(Routes.get_Products_By_Category.route(category), {
-        params: {
-            limit: limit,
-            skip: skip,
-        },
-    })
-    return response;
-}
-
-export async function searchProduct(query: string) {
+export const searchProduct = async (query: string) => {
   const response = await Api.get(
     Routes.search_Products.route,
     {
@@ -44,5 +60,5 @@ export async function searchProduct(query: string) {
     }
   );
 
-  return response;
-}
+  return response.data;
+};
