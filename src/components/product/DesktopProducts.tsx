@@ -1,231 +1,197 @@
-"use client";
 import SelectableButton from "../ui/SelectableButton";
 import { useState, useEffect } from "react";
-import { getProductsByCategory } from "../../services/GetProductByCategory";
+import { getProductsByCategory } from "../../api";
 import ProductCard from "../ui/ProductCard";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import type { Product } from "../../types/Products";
 import { GridLoader } from "react-spinners";
-import {
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
-
-
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 
 const DesktopProducts = () => {
   const [page, setPage] = useState(0);
+  const [sortBy, setSortBy] = useState("");
+
   const productsPerPage = 4;
+
   const options = [
-    {label: "Low - High", value: "price_asc"},
-    {label: "High - Low", value: "price_desc"},
-    {label: "Default", value: ""},
-  ] 
-  
-  const [sortBy, setSortBy] = useState("")
-
-  const [loading, setLoading] =
-    useState(false);
-
-  const [products, setProducts] =
-    useState<Product[]>([]);
-
-  const [error, setError] =
-    useState(false);
-
-  const [total, setTotal] =
-    useState(0);
+    { label: "Low - High", value: "price_asc" },
+    { label: "High - Low", value: "price_desc" },
+    { label: "Default", value: "" },
+  ];
 
   const { slug } = useParams();
 
-  const skip =
-    page * productsPerPage;
+  const skip = page * productsPerPage;
+
+  const {
+    data: result,
+    isLoading,
+    isError,
+  } = useQuery<{
+    products: Product[];
+    total: number;
+  }>({
+    queryKey: ["products", slug, page],
+    queryFn: () =>
+      getProductsByCategory(slug!, productsPerPage, skip),
+    enabled: Boolean(slug),
+  });
+
+  const data = result?.products ?? [];
+  const total = result?.total ?? 0;
 
   useEffect(() => {
-    if (!slug) return;
-    const fetchProducts =
-      async () => {
-        try {
-          setLoading(true);
-
-          setError(false);
-
-          const res =
-            await getProductsByCategory(
-              slug,
-              productsPerPage,
-              skip
-            );
-
-          setProducts(res.products);
-
-          setTotal(res.total);
-        } catch (error) {
-          setError(true);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-    fetchProducts();
-  }, [slug, skip]);
+    setPage(0);
+  }, [slug]);
 
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-  }, [products]);
+  }, [data]);
 
-  const displayedProducts = sortBy === "Default" ? products : [...products].sort((a, b) => sortBy === "price_asc" ? a.price - b.price : b.price - a.price);
+  const displayedProducts = [...data].sort((a, b) => {
+    if (sortBy === "price_asc") {
+      return a.price - b.price;
+    }
 
-  const TOTAL_PAGES = Math.ceil(
-    total / productsPerPage
-  );
+    if (sortBy === "price_desc") {
+      return b.price - a.price;
+    }
 
-  const isLastPage =
-    page === TOTAL_PAGES - 1;
+    return 0;
+  });
 
-  const pages: (number | null)[] =
-    [];
+  const TOTAL_PAGES = Math.ceil(total / productsPerPage);
+  const isLastPage = page >= TOTAL_PAGES - 1;
 
-  for (
-    let i = 0;
-    i < TOTAL_PAGES;
-    i++
-  ) {
+  const pages: (number | null)[] = [];
+
+  for (let i = 0; i < TOTAL_PAGES; i++) {
     if (
       i === 0 ||
       i === TOTAL_PAGES - 1 ||
-      (i >= page - 1 &&
-        i <= page + 1)
+      (i >= page - 1 && i <= page + 1)
     ) {
       pages.push(i);
-    } else {
+    } else if (pages[pages.length - 1] !== null) {
       pages.push(null);
     }
   }
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="min-h-screen flex justify-center items-center mt-10">
-        <GridLoader
-          size={25}
-          color="black"
-        />
+      <div className="mt-10 flex min-h-screen items-center justify-center">
+        <GridLoader size={25} color="black" />
       </div>
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
-      <div className="flex justify-center items-center mt-10">
-        <span>
-          Cannot load Products
-        </span>
+      <div className="mt-10 flex items-center justify-center">
+        <span>Cannot load products</span>
       </div>
     );
   }
 
   return (
-    <section className="min-h-screen max-w-7xl mx-auto conatainer p-8">
+    <section className="container mx-auto min-h-screen max-w-7xl p-8">
       <div className="float-right">
-        <SelectableButton option={options} selected={sortBy} onSelect={setSortBy}/>
+        <SelectableButton
+          option={options}
+          selected={sortBy}
+          onSelect={setSortBy}
+        />
       </div>
-      <h1 className="text-gray-700 text-2xl font-semibold mb-6 capitalize">
+
+      <h1 className="mb-6 text-2xl font-semibold capitalize text-gray-700">
         {slug || "Products"}
       </h1>
-      
-      <motion.div
-        initial={false}
-        animate={{ opacity: 1 }}
-        className="grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr_1fr] gap-6"
-      >
-        {displayedProducts.map((product) => (
-          <motion.div
-            key={product.id}
-            initial={{
-              opacity: 0,
-              y: 15,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-            }}
-            transition={{
-              duration: 0.25,
-            }}
-          >
-            <ProductCard
-              product={product}
-            />
-          </motion.div>
-        ))}
-      </motion.div>
 
-      <div className="w-full flex justify-center gap-1 mt-8 items-center">
-        <button
-          disabled={page === 0}
-          onClick={() =>
-            setPage((p) => p - 1)
-          }
-          className="px-1 py-1 border rounded-md disabled:opacity-40"
+      {displayedProducts.length === 0 ? (
+        <p className="py-10 text-center text-gray-500">
+          No products found.
+        </p>
+      ) : (
+        <motion.div
+          initial={false}
+          animate={{ opacity: 1 }}
+          className="grid grid-cols-2 gap-6 md:grid-cols-4"
         >
-          <ChevronLeft size={25} />
-        </button>
+          {displayedProducts.map((product) => (
+            <motion.div
+              key={product.id}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25 }}
+            >
+              <ProductCard product={product} />
+            </motion.div>
+          ))}
+        </motion.div>
+      )}
 
-        <div className="flex gap-2">
-          {pages.map((p, index) => {
-            if (p === null) {
-              return (
-                <span
-                  key={index}
-                  className="px-2 text-gray-500 mt-[10px]"
-                >
-                  ...
-                </span>
-              );
-            }
+      {TOTAL_PAGES > 0 && (
+        <>
+          <div className="mt-8 flex w-full items-center justify-center gap-1">
+            <button
+              disabled={page === 0}
+              onClick={() => setPage((p) => p - 1)}
+              className="rounded-md border px-1 py-1 disabled:opacity-40"
+              aria-label="Previous page"
+            >
+              <ChevronLeft size={25} />
+            </button>
 
-            return (
-              <button
-                key={index}
-                onClick={() =>
-                  setPage(p)
+            <div className="flex gap-2">
+              {pages.map((p, index) => {
+                if (p === null) {
+                  return (
+                    <span
+                      key={`ellipsis-${index}`}
+                      className="mt-[10px] px-2 text-gray-500"
+                    >
+                      ...
+                    </span>
+                  );
                 }
-                className={`px-3 py-1 border rounded-md cursor-pointer ${
-                  page === p
-                    ? "bg-black text-white"
-                    : ""
-                }`}
-              >
-                {p + 1}
-              </button>
-            );
-          })}
-        </div>
 
-        <button
-          disabled={
-            isLastPage ||
-            TOTAL_PAGES === 0
-          }
-          onClick={() =>
-            setPage((p) => p + 1)
-          }
-          className="px-1 py-1 border rounded-md disabled:opacity-40"
-        >
-          <ChevronRight size={25} />
-        </button>
-      </div>
+                return (
+                  <button
+                    key={p}
+                    onClick={() => setPage(p)}
+                    aria-current={page === p ? "page" : undefined}
+                    className={`cursor-pointer rounded-md border px-3 py-1 ${
+                      page === p ? "bg-black text-white" : ""
+                    }`}
+                  >
+                    {p + 1}
+                  </button>
+                );
+              })}
+            </div>
 
-      {isLastPage &&
-        TOTAL_PAGES > 0 && (
-          <p className="text-center text-gray-400 text-sm mt-6">
-            You've reached the end
-          </p>
-        )}
+            <button
+              disabled={isLastPage}
+              onClick={() => setPage((p) => p + 1)}
+              className="rounded-md border px-1 py-1 disabled:opacity-40"
+              aria-label="Next page"
+            >
+              <ChevronRight size={25} />
+            </button>
+          </div>
+
+          {isLastPage && (
+            <p className="mt-6 text-center text-sm text-gray-400">
+              You've reached the end
+            </p>
+          )}
+        </>
+      )}
     </section>
   );
 };

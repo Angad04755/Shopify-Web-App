@@ -47,8 +47,11 @@ export const getProductsByCategory = async (
     }
   );
 
+  console.log("Category API response:", response.data);
+
   return response.data;
 };
+
 
 export const searchProduct = async (query: string) => {
   const response = await api.get(
