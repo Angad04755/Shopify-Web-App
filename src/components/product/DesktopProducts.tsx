@@ -26,7 +26,7 @@ const DesktopProducts = () => {
   const skip = page * productsPerPage;
 
   const {
-    data: result,
+    data,
     isLoading,
     isError,
   } = useQuery<{
@@ -39,9 +39,7 @@ const DesktopProducts = () => {
     enabled: Boolean(slug),
   });
 
-  const data = result?.products ?? [];
-  const total = result?.total ?? 0;
-
+  
   useEffect(() => {
     setPage(0);
   }, [slug]);
@@ -53,17 +51,34 @@ const DesktopProducts = () => {
     });
   }, [data]);
 
-  const displayedProducts = [...data].sort((a, b) => {
-    if (sortBy === "price_asc") {
-      return a.price - b.price;
-    }
+  
+  
 
-    if (sortBy === "price_desc") {
-      return b.price - a.price;
-    }
+  if (isLoading) {
+    return (
+      <div className="mt-10 flex min-h-screen items-center justify-center">
+        <GridLoader size={25} color="black" />
+      </div>
+    );
+  }
 
-    return 0;
-  });
+  if (isError) {
+    return (
+      <div className="mt-10 flex items-center justify-center">
+        <span>Cannot load products</span>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <main className="h-screen flex justify-center items-center">
+        <p className="font-semibold text-xl">Products Not Found</p>
+      </main>
+    )
+  }
+
+  const total = data.total;
 
   const TOTAL_PAGES = Math.ceil(total / productsPerPage);
   const isLastPage = page >= TOTAL_PAGES - 1;
@@ -82,21 +97,19 @@ const DesktopProducts = () => {
     }
   }
 
-  if (isLoading) {
-    return (
-      <div className="mt-10 flex min-h-screen items-center justify-center">
-        <GridLoader size={25} color="black" />
-      </div>
-    );
-  }
+  const displayedProducts = [...data.products].sort((a, b) => {
+    if (sortBy === "price_asc") {
+      return a.price - b.price;
+    }
 
-  if (isError) {
-    return (
-      <div className="mt-10 flex items-center justify-center">
-        <span>Cannot load products</span>
-      </div>
-    );
-  }
+    if (sortBy === "price_desc") {
+      return b.price - a.price;
+    }
+
+    return 0;
+  });
+
+
 
   return (
     <section className="container mx-auto min-h-screen max-w-7xl p-8">

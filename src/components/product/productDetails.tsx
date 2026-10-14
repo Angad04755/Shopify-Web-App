@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
@@ -14,11 +14,11 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Pagination } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
 import { toast } from "sonner";
 
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import type { Product } from "../../types/Products";
@@ -35,6 +35,9 @@ const ProductDetails = () => {
   const dispatch = useDispatch();
 
   const [selectedImage, setSelectedImage] = useState(0);
+  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(
+    null
+  );
 
   const [isInWishlist, setIsInWishlist] = useState(() => {
     const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
@@ -52,6 +55,16 @@ const ProductDetails = () => {
     },
     enabled: Boolean(id),
   });
+
+  // Reset the selected image when the product changes
+  useEffect(() => {
+    setSelectedImage(0);
+  }, [id]);
+
+  const handleThumbnailClick = (index: number) => {
+    setSelectedImage(index);
+    swiperInstance?.slideTo(index);
+  };
 
   const handleWishlist = () => {
     if (!data) return;
@@ -109,7 +122,7 @@ const ProductDetails = () => {
   if (isError || !data) {
     return (
       <div className="px-4 py-20 text-center">
-        <h2 className="text-2xl font-bold text-gray-900">
+        <h2 className="text-2xl font-semibold text-gray-900">
           Unable to load product
         </h2>
 
@@ -131,12 +144,10 @@ const ProductDetails = () => {
         <div className="min-w-0">
           <div className="relative overflow-hidden rounded-2xl border border-gray-100 bg-gray-50">
             <Swiper
-              modules={[Navigation, Pagination]}
-              navigation={{
-                prevEl: ".product-prev",
-                nextEl: ".product-next",
-              }}
+              key={data.id}
+              modules={[Pagination]}
               pagination={{ clickable: true }}
+              onSwiper={setSwiperInstance}
               onSlideChange={(swiper) =>
                 setSelectedImage(swiper.activeIndex)
               }
@@ -157,7 +168,8 @@ const ProductDetails = () => {
 
             <button
               type="button"
-              className="product-prev absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition hover:bg-gray-100"
+              onClick={() => swiperInstance?.slidePrev()}
+              className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition hover:bg-gray-100"
               aria-label="Previous image"
             >
               <ChevronLeft size={20} />
@@ -165,7 +177,8 @@ const ProductDetails = () => {
 
             <button
               type="button"
-              className="product-next absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition hover:bg-gray-100"
+              onClick={() => swiperInstance?.slideNext()}
+              className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-gray-200 bg-white shadow-sm transition hover:bg-gray-100"
               aria-label="Next image"
             >
               <ChevronRight size={20} />
@@ -178,8 +191,8 @@ const ProductDetails = () => {
               <button
                 type="button"
                 key={`${image}-thumbnail-${index}`}
-                onClick={() => setSelectedImage(index)}
-                className={`flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border bg-white p-2 transition ${
+                onClick={() => handleThumbnailClick(index)}
+                className={`flex h-20 w-20 shrink-0 cursor-pointer items-center justify-center rounded-xl border bg-white p-2 transition ${
                   selectedImage === index
                     ? "border-gray-900 ring-1 ring-gray-900"
                     : "border-gray-200 hover:border-gray-400"
@@ -204,7 +217,7 @@ const ProductDetails = () => {
             </span>
           </div>
 
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-gray-700 sm:text-4xl">
             {data.title}
           </h1>
 
@@ -237,7 +250,7 @@ const ProductDetails = () => {
 
           {/* Price */}
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <span className="text-3xl font-bold text-gray-900">
+            <span className="text-3xl font-semibold text-gray-900">
               ${discountedPrice.toFixed(2)}
             </span>
 
@@ -308,7 +321,7 @@ const ProductDetails = () => {
               type="button"
               onClick={handleAddToCart}
               disabled={data.stock <= 0}
-              className="flex flex-1 items-center place-content-center gap-2 rounded-xl bg-yellow-300 px-5 py-3.5 font-semibold text-slate-700 transition hover:bg-yellow-400 active:bg-yellow-500 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+              className="flex flex-1 cursor-pointer place-content-center items-center gap-2 rounded-xl bg-yellow-300 px-5 py-3.5 font-semibold text-slate-700 transition hover:bg-yellow-400 active:bg-yellow-500 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <ShoppingCart size={20} />
               Add to Cart
@@ -323,7 +336,7 @@ const ProductDetails = () => {
                   : "Add to wishlist"
               }
               aria-pressed={isInWishlist}
-              className={`group flex h-12 w-12 shrink-0 items-center justify-center self-center rounded-full border transition-all duration-200 active:scale-90 cursor-pointer ${
+              className={`group flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center self-center rounded-full border transition-all duration-200 active:scale-90 ${
                 isInWishlist
                   ? "border-red-200 bg-red-50 text-red-500"
                   : "border-gray-200 bg-white text-gray-600"
@@ -461,7 +474,7 @@ const ProductDetails = () => {
       {/* Customer reviews */}
       {data.reviews && data.reviews.length > 0 && (
         <section className="mt-16 border-t border-gray-200 pt-10">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-semibold text-gray-900">
             Customer Reviews
           </h2>
 
