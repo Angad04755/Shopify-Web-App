@@ -1,31 +1,15 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { getAllCategory } from "../../services/GetAllCatogories"
 import { useNavigate } from "react-router-dom";
-
+import { useQuery } from "@tanstack/react-query";
+import { getAllCategory } from "../../api";
 const Category = () => {
-  const [categories, setCategories] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const data = await getAllCategory();
-        setCategories(data);
-      } catch (error) {
-        console.error("Failed to fetch categories", error);
-        setCategories([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getAllCategory,
+  })
 
-    getCategories();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="pt-20 pb-16 text-center text-gray-500">
         Loading categories...
@@ -33,7 +17,15 @@ const Category = () => {
     );
   }
 
-  if (categories.length === 0) {
+  if (isError) {
+    return (
+      <div className="pt-20 pb-16 text-center text-gray-500">
+        Error loading categories
+      </div>
+    );
+  }
+
+  if (data.length === 0) {
     return (
       <div className="pt-20 pb-16 text-center text-gray-500">
         No categories available
@@ -62,7 +54,7 @@ const Category = () => {
 
         {/* Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
-          {categories.map((category) => (
+          {data.map((category: any) => (
             <div
               key={category.slug}
               

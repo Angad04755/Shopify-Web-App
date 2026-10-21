@@ -8,18 +8,11 @@ import type { Product } from "../../types/Products";
 import { GridLoader } from "react-spinners";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-
+import { productsPerPage } from "../../constants";
+import { options } from "../../constants";
 const DesktopProducts = () => {
   const [page, setPage] = useState(0);
-  const [sortBy, setSortBy] = useState("");
-
-  const productsPerPage = 4;
-
-  const options = [
-    { label: "Low - High", value: "price_asc" },
-    { label: "High - Low", value: "price_desc" },
-    { label: "Default", value: "" },
-  ];
+  const [sortBy, setSortBy] = useState("");  
 
   const { slug } = useParams();
 

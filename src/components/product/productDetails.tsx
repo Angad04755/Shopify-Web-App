@@ -44,16 +44,13 @@ const ProductDetails = () => {
     return wishlist.some((item: Product) => item.id === Number(id));
   });
 
+  if (!id) {
+    return;
+  }
+
   const { data, isLoading, isError } = useQuery<Product>({
     queryKey: ["product", id],
-    queryFn: () => {
-      if (!id) {
-        throw new Error("Product ID is missing");
-      }
-
-      return getProductById(id);
-    },
-    enabled: Boolean(id),
+    queryFn: () => getProductById(id),
   });
 
   // Reset the selected image when the product changes
