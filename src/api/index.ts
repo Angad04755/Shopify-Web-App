@@ -1,6 +1,6 @@
 
-import api from "./api";
-import routes from "./routes";
+import { api } from "./api";
+import { routes } from "./routes";
 
 
 export const getAllProduct = async () => {

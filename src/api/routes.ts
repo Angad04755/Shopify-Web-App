@@ -1,5 +1,5 @@
 
-const routes = {
+export const routes = {
   get_Products: {
     route: "/products",
   },
