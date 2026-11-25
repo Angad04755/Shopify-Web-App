@@ -4,7 +4,6 @@ import { getProductsByCategory } from "../../api";
 import ProductCard from "../ui/ProductCard";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
-import type { Product } from "../../types/Products";
 import { GridLoader } from "react-spinners";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -22,10 +21,7 @@ const DesktopProducts = () => {
     data,
     isLoading,
     isError,
-  } = useQuery<{
-    products: Product[];
-    total: number;
-  }>({
+  } = useQuery({
     queryKey: ["products", slug, page],
     queryFn: () =>
       getProductsByCategory(slug!, productsPerPage, skip),
