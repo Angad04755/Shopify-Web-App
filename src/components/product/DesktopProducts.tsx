@@ -9,6 +9,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { productsPerPage } from "../../constants";
 import { options } from "../../constants";
+import { type Product } from "../../types/Products";
 const DesktopProducts = () => {
   const [page, setPage] = useState(0);
   const [sortBy, setSortBy] = useState("");  
@@ -86,7 +87,7 @@ const DesktopProducts = () => {
     }
   }
 
-  const displayedProducts = [...data.products].sort((a, b) => {
+  const displayedProducts: Product[] = [...data.products].sort((a, b) => {
     if (sortBy === "price_asc") {
       return a.price - b.price;
     }
